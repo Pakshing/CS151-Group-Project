@@ -1,15 +1,16 @@
 package controller;
 import model.*;
 public class AddTaskMessage implements Message {
-    private Task task;
+    private String title;
 
-    public AddTaskMessage(Task task) {
-        this.task = task;
+    public AddTaskMessage(String title) {
+        this.title = title;
     }
 
-    public Task getTask() {
-        return task;
+    public String getTitle() {
+        return title;
     }
+
 }
 
 class AddToRegularMessage implements Message{

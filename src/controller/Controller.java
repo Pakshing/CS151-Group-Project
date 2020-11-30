@@ -60,16 +60,15 @@ public class Controller {
     }
 
     private class AddNewTaskValve implements Valve{
+        //make the class object here
         @Override
         public ValveResponse execute(Message message) {
             if(message.getClass() != AddTaskMessage.class){
                 return ValveResponse.MISS;
             }
-            Task task = ((AddTaskMessage)message ).getTask();
+            String title = ((AddTaskMessage)message).getTitle();
+            Task task = new Task(title );
             model.add(task);
-            //System.out.println("model size: " +model.size());
-            //model.updateList(model);
-            System.out.println(task);
             view.change(model);
             return ValveResponse.EXECUTED;
         }

@@ -16,6 +16,7 @@ public class View extends JFrame {
     private JFrame gameFrame;
     private BlockingQueue<Message> queue;
     private ArrayList<Task> tasks;
+    private JPanel panel;
 
 
     public static View init(BlockingQueue<Message> queue, ArrayList<Task> tasks) {
@@ -31,17 +32,24 @@ public class View extends JFrame {
         // JFrame should be able to add Messages to queue
         // JFrame can be in a separate class or created JFrame with all the elements in this class
         // or you can make View a subclass of JFrame by extending it
-        gameFrame = new JFrame();
-        gameFrame.setPreferredSize(new Dimension(500,500));
-        gameFrame.setLayout(new BorderLayout());
-        gameFrame.add(new JLabel("To-Do",SwingConstants.CENTER),BorderLayout.NORTH);
-        TaskView taskView = new TaskView(tasks);
 
-        //JButton newGame = new JButton("New Game");
-        //JButton hitButton = new JButton("hit");
+       this.setPreferredSize(new Dimension(500,500));
+
+        this.add(new JLabel("To-Do",SwingConstants.CENTER),BorderLayout.NORTH);
+        //TaskView taskView = new TaskView(tasks);
+        panel = new JPanel();
+
+        // Set the BoxLayout to be X_AXIS: from left to right 
+        BoxLayout boxlayout = new BoxLayout(panel, BoxLayout.Y_AXIS);
+        panel.setLayout(boxlayout);
+
+
 
         JButton addToRegularButton = new JButton("Add To Regular");
         //JButton addToImportantButton = new JButton("Add To Important");
+
+        this.add(panel);
+
 
         JPanel inputPanel = new JPanel();
         inputPanel.setLayout(new BorderLayout());
@@ -57,35 +65,16 @@ public class View extends JFrame {
             try {
                 String title = addNewTaskField.getText();
                 addNewTaskField.setText("");
-                this.queue.put(new AddTaskMessage(new Task(title))); // <--- adding Add New Task message to the queue
+                this.queue.put(new AddTaskMessage(title)); // <--- adding Add New Task message to the queue
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
         });
 
-//        newGame.addActionListener(event -> {
-//            try {
-//                this.queue.put(new NewGameMessage()); // <--- adding NewGame message to the queue
-//            } catch (InterruptedException e) {
-//                e.printStackTrace();
-//            }
-//        });
-
-//        hitButton.addActionListener(event -> {
-//            try {
-//                this.queue.put(new HitMessage()); // <--- adding Hit message to the queue
-//            } catch (InterruptedException e) {
-//                e.printStackTrace();
-//            }
-//        });
-
-        // add everything and set layout and other standard JFrame settings
-        //gameFrame.add(newGame);
-        //gameFrame.add(hitButton);
-        gameFrame.add(taskView);
+//
         this.add(inputPanel,BorderLayout.SOUTH);
         this.pack();
-        //gameFrame.setLayout(new FlowLayout());
+
 
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setVisible(true);
@@ -104,10 +93,16 @@ public class View extends JFrame {
 
     public void change(ArrayList<Task> tasks) {
         // TODO: do all the updates and repaint
-        System.out.println("change: task size: " +tasks.size());
+
         this.tasks = tasks;
-        taskView.updateTaskView(this.tasks);
+        //taskView.updateTaskView(this.tasks);
        // System.out.println("change");
+        panel.removeAll();
+        for(int i=0; i < tasks.size(); i++){
+            String title = ((Task)tasks.get(i)).getTitle();
+            panel.add(new JLabel(title));
+        }
+
         this.revalidate();
         this.repaint();
     }
