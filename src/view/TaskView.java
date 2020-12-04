@@ -10,8 +10,8 @@ import model.*;
 public class TaskView extends JPanel {
     private ArrayList<Task> tasks;
 
-    public TaskView(ArrayList<Task> tasks){
-        this.tasks = tasks;
+    public TaskView(ArrayList<Task> Tasks){
+        this.tasks = Tasks;
 
         //this.add(new JLabel("To-Do"));
         this.setLayout(new BoxLayout(this,BoxLayout.Y_AXIS));
@@ -22,12 +22,11 @@ public class TaskView extends JPanel {
         this.revalidate();
     }
 
-    public void updateTaskView(ArrayList<Task> tasks){
-        this.tasks = tasks;
+    public void updateTaskView(Task t){
         System.out.println("updateTaskView: " + tasks.size());
-//        for(int i=0; i < tasks.size();i++){
-//            this.add(new TaskButton(tasks.get(i)));
-//        }
+        System.out.println(tasks.size());
+        tasks.add(this.tasks.size()-1, t);
+        System.out.println(this.tasks);
         repaint();
     }
 

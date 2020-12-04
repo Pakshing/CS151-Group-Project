@@ -16,13 +16,16 @@ public class View extends JFrame {
     private JFrame gameFrame;
     private BlockingQueue<Message> queue;
     private ArrayList<Task> tasks;
+    private ArrayList<Task> tasksImportant;
     private JPanel panel;
+    private JPanel panelTwo;
 
 
     public static View init(BlockingQueue<Message> queue, ArrayList<Task> tasks) {
         // Create object of type view
         return new View(queue,tasks);
     }
+
 
     private View(BlockingQueue<Message> queue, ArrayList<Task> tasks) {
         this.queue = queue;
@@ -46,8 +49,7 @@ public class View extends JFrame {
 
 
         JButton addToRegularButton = new JButton("Add To Regular");
-        //JButton addToImportantButton = new JButton("Add To Important");
-
+        JButton addToImportantButton = new JButton("Add To Important");
         this.add(panel);
 
 
@@ -71,11 +73,8 @@ public class View extends JFrame {
             }
         });
 
-//
         this.add(inputPanel,BorderLayout.SOUTH);
         this.pack();
-
-
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setVisible(true);
     }
@@ -95,8 +94,6 @@ public class View extends JFrame {
         // TODO: do all the updates and repaint
 
         this.tasks = tasks;
-        //taskView.updateTaskView(this.tasks);
-       // System.out.println("change");
         panel.removeAll();
         for(int i=0; i < tasks.size(); i++){
             String title = ((Task)tasks.get(i)).getTitle();

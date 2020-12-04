@@ -13,10 +13,10 @@ public class TaskButton extends JButton {
     public TaskButton(Task task){
         this.task = task;
         setText(task.toString());
-        addActionListener(new TaskButtonListner());
+        addActionListener(new TaskButtonListener());
     }
 
-    private class TaskButtonListner implements ActionListener{
+    private class TaskButtonListener implements ActionListener{
         @Override
         public void actionPerformed(ActionEvent actionEvent) {
             System.out.println("Clicked!");
