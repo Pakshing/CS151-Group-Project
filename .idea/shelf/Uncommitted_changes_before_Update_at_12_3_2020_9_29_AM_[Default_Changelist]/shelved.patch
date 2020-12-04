@@ -1,0 +1,74 @@
+Index: src/view/TaskView.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package view;\r\n\r\nimport model.Task;\r\n\r\nimport javax.swing.*;\r\nimport java.awt.*;\r\nimport java.util.*;\r\nimport java.util.List;\r\nimport model.*;\r\npublic class TaskView extends JPanel {\r\n    private ArrayList<Task> tasks;\r\n\r\n    public TaskView(ArrayList<Task> tasks){\r\n        this.tasks = tasks;\r\n\r\n        //this.add(new JLabel(\"To-Do\"));\r\n        this.setLayout(new BoxLayout(this,BoxLayout.Y_AXIS));\r\n        for(int i=0; i < tasks.size();i++){\r\n            this.add(new TaskButton(tasks.get(i)));\r\n        }\r\n\r\n        this.revalidate();\r\n    }\r\n\r\n    public void updateTaskView(ArrayList<Task> tasks){\r\n        this.tasks = tasks;\r\n        System.out.println(\"updateTaskView: \" + tasks.size());\r\n//        for(int i=0; i < tasks.size();i++){\r\n//            this.add(new TaskButton(tasks.get(i)));\r\n//        }\r\n        repaint();\r\n    }\r\n\r\n//    public void addTask(Task task){\r\n//        tasks.add(task);\r\n//        this.add(new TaskButton(task));\r\n//        this.revalidate();;\r\n//    }\r\n\r\n\r\n\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/view/TaskView.java	(revision 721b8a53da69aa3af4269b6f7a4df5fe786082e3)
++++ src/view/TaskView.java	(date 1606529347586)
+@@ -10,8 +10,8 @@
+ public class TaskView extends JPanel {
+     private ArrayList<Task> tasks;
+ 
+-    public TaskView(ArrayList<Task> tasks){
+-        this.tasks = tasks;
++    public TaskView(ArrayList<Task> Tasks){
++        this.tasks = Tasks;
+ 
+         //this.add(new JLabel("To-Do"));
+         this.setLayout(new BoxLayout(this,BoxLayout.Y_AXIS));
+@@ -22,9 +22,13 @@
+         this.revalidate();
+     }
+ 
+-    public void updateTaskView(ArrayList<Task> tasks){
+-        this.tasks = tasks;
++    public void updateTaskView(Task t){
+         System.out.println("updateTaskView: " + tasks.size());
++        System.out.println(tasks.size());
++        tasks.add(this.tasks.size()-1, t);
++        System.out.println(this.tasks);
++        //this.tasks = Tasks;
++        //System.out.println("updateTaskView: " + tasks.size());
+ //        for(int i=0; i < tasks.size();i++){
+ //            this.add(new TaskButton(tasks.get(i)));
+ //        }
+Index: src/view/View.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package view;\r\n\r\nimport controller.AddTaskMessage;\r\nimport controller.HitMessage;\r\nimport controller.Message;\r\nimport controller.NewGameMessage;\r\n\r\nimport javax.swing.*;\r\nimport java.awt.*;\r\nimport java.util.ArrayList;\r\nimport java.util.concurrent.BlockingQueue;\r\nimport model.*;\r\n\r\npublic class View extends JFrame {\r\n    TaskView taskView;\r\n    private JFrame gameFrame;\r\n    private BlockingQueue<Message> queue;\r\n    private ArrayList<Task> tasks;\r\n\r\n\r\n    public static View init(BlockingQueue<Message> queue, ArrayList<Task> tasks) {\r\n        // Create object of type view\r\n        return new View(queue,tasks);\r\n    }\r\n\r\n    private View(BlockingQueue<Message> queue, ArrayList<Task> tasks) {\r\n        this.queue = queue;\r\n        this.tasks = tasks;\r\n        // TODO:\r\n        // you should initalize JFrame and show it,\r\n        // JFrame should be able to add Messages to queue\r\n        // JFrame can be in a separate class or created JFrame with all the elements in this class\r\n        // or you can make View a subclass of JFrame by extending it\r\n        gameFrame = new JFrame();\r\n        gameFrame.setPreferredSize(new Dimension(500,500));\r\n        gameFrame.setLayout(new BorderLayout());\r\n        gameFrame.add(new JLabel(\"To-Do\",SwingConstants.CENTER),BorderLayout.NORTH);\r\n        TaskView taskView = new TaskView(tasks);\r\n\r\n        //JButton newGame = new JButton(\"New Game\");\r\n        //JButton hitButton = new JButton(\"hit\");\r\n\r\n        JButton addToRegularButton = new JButton(\"Add To Regular\");\r\n        //JButton addToImportantButton = new JButton(\"Add To Important\");\r\n\r\n        JPanel inputPanel = new JPanel();\r\n        inputPanel.setLayout(new BorderLayout());\r\n        inputPanel.add(new JLabel(\"Add New Task:\"),BorderLayout.NORTH);\r\n        JTextField addNewTaskField = new JTextField(10);\r\n        addNewTaskField.setText(\"\");\r\n        inputPanel.add(addNewTaskField,BorderLayout.NORTH);\r\n        inputPanel.add(addToRegularButton,BorderLayout.SOUTH);\r\n\r\n\r\n\r\n        addToRegularButton.addActionListener(event -> {\r\n            try {\r\n                String title = addNewTaskField.getText();\r\n                addNewTaskField.setText(\"\");\r\n                this.queue.put(new AddTaskMessage(new Task(title))); // <--- adding Add New Task message to the queue\r\n            } catch (InterruptedException e) {\r\n                e.printStackTrace();\r\n            }\r\n        });\r\n\r\n//        newGame.addActionListener(event -> {\r\n//            try {\r\n//                this.queue.put(new NewGameMessage()); // <--- adding NewGame message to the queue\r\n//            } catch (InterruptedException e) {\r\n//                e.printStackTrace();\r\n//            }\r\n//        });\r\n\r\n//        hitButton.addActionListener(event -> {\r\n//            try {\r\n//                this.queue.put(new HitMessage()); // <--- adding Hit message to the queue\r\n//            } catch (InterruptedException e) {\r\n//                e.printStackTrace();\r\n//            }\r\n//        });\r\n\r\n        // add everything and set layout and other standard JFrame settings\r\n        //gameFrame.add(newGame);\r\n        //gameFrame.add(hitButton);\r\n        gameFrame.add(taskView);\r\n        this.add(inputPanel,BorderLayout.SOUTH);\r\n        this.pack();\r\n        //gameFrame.setLayout(new FlowLayout());\r\n\r\n        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);\r\n        this.setVisible(true);\r\n    }\r\n\r\n\r\n    public void paint(Graphics g){\r\n        super.paint(g);\r\n\r\n        System.out.println(\"paint: tasks size: \" + this.tasks.size());\r\n        Graphics2D g2 = (Graphics2D) g;\r\n\r\n\r\n    }\r\n\r\n\r\n    public void change(ArrayList<Task> tasks) {\r\n        // TODO: do all the updates and repaint\r\n        System.out.println(\"change: task size: \" +tasks.size());\r\n        this.tasks = tasks;\r\n        taskView.updateTaskView(this.tasks);\r\n       // System.out.println(\"change\");\r\n        this.revalidate();\r\n        this.repaint();\r\n    }\r\n\r\n    public void dispose() {\r\n        // TODO: clear all the resources\r\n        // for example, gameFrame.dispose();\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/view/View.java	(revision 721b8a53da69aa3af4269b6f7a4df5fe786082e3)
++++ src/view/View.java	(date 1606768285548)
+@@ -105,11 +105,25 @@
+     public void change(ArrayList<Task> tasks) {
+         // TODO: do all the updates and repaint
+         System.out.println("change: task size: " +tasks.size());
++        int last = this.tasks.size();
+         this.tasks = tasks;
+-        taskView.updateTaskView(this.tasks);
+-       // System.out.println("change");
+-        this.revalidate();
++        //taskView.updateTaskView(this.tasks);
++        if (tasks != null)
++        {
++            try {
++                Task input = this.tasks.get(last-1);
++                taskView.updateTaskView(input);
++            }
++            catch(Exception e)
++            {
++                System.out.println(e.getCause());
++            }
++            System.out.println(""+ this.tasks); //this.tasks works fine. updatetaskview doesnt work OR repaint causes issue
++
++        }
++        //this.revalidate();
+         this.repaint();
++
+     }
+ 
+     public void dispose() {
