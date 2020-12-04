@@ -13,11 +13,10 @@ import model.*;
 
 public class View extends JFrame {
     TaskView taskView;
-    private JFrame gameFrame;
     private BlockingQueue<Message> queue;
     private ArrayList<Task> tasks;
     private ArrayList<Task> tasksImportant;
-    private JPanel panel;
+    private JPanel TaskPanel;
     private JPanel panelTwo;
 
 
@@ -40,17 +39,17 @@ public class View extends JFrame {
 
         this.add(new JLabel("To-Do",SwingConstants.CENTER),BorderLayout.NORTH);
         //TaskView taskView = new TaskView(tasks);
-        panel = new JPanel();
+        TaskPanel = new JPanel();
 
         // Set the BoxLayout to be X_AXIS: from left to right 
-        BoxLayout boxlayout = new BoxLayout(panel, BoxLayout.Y_AXIS);
-        panel.setLayout(boxlayout);
+        BoxLayout boxlayout = new BoxLayout(TaskPanel, BoxLayout.Y_AXIS);
+        TaskPanel.setLayout(boxlayout);
 
 
 
         JButton addToRegularButton = new JButton("Add To Regular");
         JButton addToImportantButton = new JButton("Add To Important");
-        this.add(panel);
+        this.add(TaskPanel);
 
 
         JPanel inputPanel = new JPanel();
@@ -59,7 +58,8 @@ public class View extends JFrame {
         JTextField addNewTaskField = new JTextField(10);
         addNewTaskField.setText("");
         inputPanel.add(addNewTaskField,BorderLayout.NORTH);
-        inputPanel.add(addToRegularButton,BorderLayout.SOUTH);
+        inputPanel.add(addToImportantButton, BorderLayout.EAST);
+        inputPanel.add(addToRegularButton,BorderLayout.WEST);
 
 
 
@@ -80,24 +80,15 @@ public class View extends JFrame {
     }
 
 
-    public void paint(Graphics g){
-        super.paint(g);
-
-        System.out.println("paint: tasks size: " + this.tasks.size());
-        Graphics2D g2 = (Graphics2D) g;
-
-
-    }
-
-
     public void change(ArrayList<Task> tasks) {
         // TODO: do all the updates and repaint
 
         this.tasks = tasks;
-        panel.removeAll();
+        TaskPanel.removeAll();
         for(int i=0; i < tasks.size(); i++){
             String title = ((Task)tasks.get(i)).getTitle();
-            panel.add(new JLabel(title));
+            TaskPanel.add(new TaskButton(new Task(title)));
+            //TaskPanel.add(new JLabel(title));
         }
 
         this.revalidate();
