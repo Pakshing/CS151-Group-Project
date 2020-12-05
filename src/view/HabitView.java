@@ -34,6 +34,9 @@ public class HabitView extends JFrame {
         // JFrame should be able to add Messages to queue
         // JFrame can be in a separate class or created JFrame with all the elements in this class
         // or you can make View a subclass of JFrame by extending it
+
+
+
         Habit habit1 = new Habit("Exercising");
         ArrayList<Integer> habit1DaysOfComplete = new ArrayList<>();
         habit1DaysOfComplete.add(1);
@@ -43,6 +46,31 @@ public class HabitView extends JFrame {
         habit1DaysOfComplete.add(10);
         habit1DaysOfComplete.add(21);
         habit1.setDaysOfCompleted(habit1DaysOfComplete);
+
+        Habit habit2 = new Habit("Working Out");
+        ArrayList<Integer> habit2DaysOfComplete = new ArrayList<>();
+        habit2DaysOfComplete.add(1);
+        habit2DaysOfComplete.add(2);
+        habit2DaysOfComplete.add(3);
+        habit2DaysOfComplete.add(9);
+        habit2DaysOfComplete.add(10);
+        habit2DaysOfComplete.add(21);
+        habit2.setDaysOfCompleted(habit2DaysOfComplete);
+
+        Habit habit3 = new Habit("Running");
+        ArrayList<Integer> habit3DaysOfComplete = new ArrayList<>();
+        habit3DaysOfComplete.add(1);
+        habit3DaysOfComplete.add(2);
+        habit3DaysOfComplete.add(3);
+        habit3DaysOfComplete.add(9);
+        habit3DaysOfComplete.add(10);
+        habit3DaysOfComplete.add(21);
+        habit3.setDaysOfCompleted(habit3DaysOfComplete);
+
+        habits.add(habit1);
+        habits.add(habit2);
+        habits.add(habit3);
+
 
         this.setPreferredSize(new Dimension(700,700));
         this.setLayout(new BorderLayout());
@@ -78,13 +106,17 @@ public class HabitView extends JFrame {
 
         JPanel habitListPanel = new JPanel();
         habitListPanel.setLayout(new FlowLayout());
+        for(int i =0; i < habits.size(); i++){
+            JButton btn = new JButton(habits.get(i).getTitle());
+            habitListPanel.add(btn);
+        }
         //habitListPanel.add()
 
         //mainDisplayPanel.add(titleLabel,gbc);
 
 
 
-
+        this.add(habitListPanel, BorderLayout.SOUTH);
         this.add(mainDisplayPanel,BorderLayout.CENTER);
         this.pack();
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
