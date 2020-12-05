@@ -1,15 +1,9 @@
 package model;
-
-import view.TaskView;
-
 import java.util.ArrayList;
 import view.*;
 
 public class TaskList {
-    //private String name;
     private ArrayList<Task> tasks;
-
-
 
     public TaskList(){
         this.tasks = new ArrayList<>();
@@ -31,10 +25,6 @@ public class TaskList {
         return this.tasks;
     }
 
-    public void updateList(ArrayList<Task> list){
-        System.out.println("Size of list: " + list.size());
-        this.tasks = list;
-    }
 
 
 }
