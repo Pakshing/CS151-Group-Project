@@ -26,14 +26,18 @@ public class YourProgramName {
         model = new TaskList();
         habitsModel = new ArrayList<Habit>();
         modelImportant = new ImportantTaskList();
+
         view = View.init(queue,model.getWholeTasks(), modelImportant.getTasksImportant());
-        habitView = HabitView.init(queue, habitsModel);
+       // habitView = HabitView.init(queue, habitsModel);
+
         Controller controller = new Controller(view, model.getWholeTasks(), modelImportant.getTasksImportant(), queue);
-        HabitController habitController = new HabitController(habitView,habitsModel, queue);
+        //HabitController habitController = new HabitController(habitView,habitsModel, queue);
+
         controller.mainLoop();
-        habitController.mainLoop();
+        //habitController.mainLoop();
+
         view.dispose();
-        habitView.dispose();
+        //habitView.dispose();
         queue.clear();
     }
 

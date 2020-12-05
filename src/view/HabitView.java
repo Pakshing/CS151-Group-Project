@@ -73,28 +73,20 @@ public class HabitView extends JFrame {
 
 
         this.setPreferredSize(new Dimension(700,700));
-        this.setLayout(new GridBagLayout());
-        JPanel mainDisplayPanel = new JPanel();
-        JPanel habitListPanel = new JPanel();
-        gbc.insets = new Insets(5,5,5,5);
+        this.setLayout(new BorderLayout());
 
-        JLabel titleLabel = new JLabel("Exercising");
-        gbc.gridx = 3;
-        gbc.gridy = 0;
-        this.add(titleLabel,gbc);
-
-        this.add(habitListPanel, BorderLayout.SOUTH);
-        this.add(mainDisplayPanel,BorderLayout.CENTER);
 
         //this.add(new JLabel("Habit",SwingConstants.CENTER),BorderLayout.NORTH);
 
         //main display panel in the middle.
-
+        JPanel mainDisplayPanel = new JPanel();
         mainDisplayPanel.setLayout(new GridBagLayout());
         mainDisplayPanel.setSize(400,400);
         gbc.insets = new Insets(2,2,2,2);
 
-
+        JLabel titleLabel = new JLabel("Exercising");
+        gbc.gridx = 3;
+        gbc.gridy = 0;
         //gbc.gridwidth =5;
         mainDisplayPanel.add(titleLabel,gbc);
         int indexY = 1;
@@ -112,7 +104,7 @@ public class HabitView extends JFrame {
         }
 
 
-
+        JPanel habitListPanel = new JPanel();
         habitListPanel.setLayout(new FlowLayout());
         for(int i =0; i < habits.size(); i++){
             JButton btn = new JButton(habits.get(i).getTitle());
@@ -124,6 +116,8 @@ public class HabitView extends JFrame {
 
 
 
+        this.add(habitListPanel, BorderLayout.SOUTH);
+        this.add(mainDisplayPanel,BorderLayout.CENTER);
         this.pack();
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setVisible(true);

@@ -18,7 +18,8 @@ public class View extends JFrame {
     private ArrayList<Task> tasks;
     private ArrayList<Task> tasksImportant;
     private JPanel TaskPanel;
-    private JList<Task> ImportantTasksPanel;
+    private JPanel ImportantTasksPanel;
+   // private JList<Task> ImportantTasksPanel;
 
 
     public static View init(BlockingQueue<Message> queue, ArrayList<Task> tasks, ArrayList<Task> tasksImportant) {
@@ -37,20 +38,34 @@ public class View extends JFrame {
         // or you can make View a subclass of JFrame by extending it
 
         this.setPreferredSize(new Dimension(500,500));
+        this.setLayout(new BorderLayout());
 
-        this.add(new JLabel("To-Do",SwingConstants.CENTER),BorderLayout.NORTH);
-        //TaskView taskView = new TaskView(tasks);
         TaskPanel = new JPanel();
+        ImportantTasksPanel = new JPanel();
 
         // Set the BoxLayout to be X_AXIS: from left to right 
         BoxLayout boxlayout = new BoxLayout(TaskPanel, BoxLayout.Y_AXIS);
         TaskPanel.setLayout(boxlayout);
+        TaskPanel.setSize(100,200);
+        TaskPanel.setBackground(new Color(217, 249, 255));
+
+        BoxLayout boxlayout2 = new BoxLayout(ImportantTasksPanel, BoxLayout.Y_AXIS);
+        ImportantTasksPanel.setLayout(boxlayout2);
+        ImportantTasksPanel.setSize(100,200);
+        ImportantTasksPanel.setBackground(new Color(217, 223, 255));
+
+        JLabel titleLabel = new JLabel("To-Do",SwingConstants.CENTER);
+        this.add(titleLabel,BorderLayout.NORTH);
+
+        JPanel mainDisplayPanel = new JPanel(new GridLayout(1,2));
+        //mainDisplayPanel.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
+        mainDisplayPanel.add(TaskPanel);
+        mainDisplayPanel.add(ImportantTasksPanel);
+        //this.add(ImportantTasksPanel);
+
+       this.add(mainDisplayPanel,BorderLayout.CENTER);
 
 
-
-        JButton addToRegularButton = new JButton("Add To Regular");
-        JButton addToImportantButton = new JButton("Add To Important");
-        this.add(TaskPanel);
 
 
         JPanel inputPanel = new JPanel();
@@ -59,6 +74,9 @@ public class View extends JFrame {
         JTextField addNewTaskField = new JTextField(10);
         addNewTaskField.setText("");
         inputPanel.add(addNewTaskField,BorderLayout.NORTH);
+
+        JButton addToRegularButton = new JButton("Add To Regular");
+        JButton addToImportantButton = new JButton("Add To Important");
         inputPanel.add(addToImportantButton, BorderLayout.EAST);
         inputPanel.add(addToRegularButton,BorderLayout.WEST);
 
@@ -92,25 +110,17 @@ public class View extends JFrame {
     }
 
 
-    public void paint(Graphics g){
-        super.paint(g);
-
-        System.out.println("paint: tasks size: " + this.tasks.size());
-        Graphics2D g2 = (Graphics2D) g;
-
-
-    }
-
 
     public void change(ArrayList<Task> tasks) {
         // TODO: do all the updates and repaint
 
         this.tasks = tasks;
         TaskPanel.removeAll();
+        TaskPanel.add(new JLabel("Regular",SwingConstants.CENTER),BorderLayout.NORTH);
         for(int i=0; i < tasks.size(); i++){
             String title = ((Task)tasks.get(i)).getTitle();
             TaskPanel.add(new TaskButton(new Task(title)));
-            //TaskPanel.add(new JLabel(title));
+
         }
 
         this.revalidate();
@@ -119,10 +129,11 @@ public class View extends JFrame {
 
     public void changeImp(ArrayList<Task> tasks) {
         this.tasks = tasks;
-        TaskPanel.removeAll();
+        ImportantTasksPanel.removeAll();
+        ImportantTasksPanel.add(new JLabel("Important",SwingConstants.CENTER),BorderLayout.NORTH);
         for(int i=0; i < tasks.size(); i++){
             String title = ((Task)tasks.get(i)).getTitle();
-            TaskPanel.add(new JLabel(title));
+            ImportantTasksPanel.add(new TaskButton(new Task(title)));
         }
         //loop to print the important tasks
         /*
