@@ -1,10 +1,8 @@
 package view;
 
 import javax.swing.*;
-import controller.AddTaskMessage;
-import controller.HitMessage;
-import controller.Message;
-import controller.NewGameMessage;
+
+import controller.*;
 
 import javax.swing.*;
 import java.awt.*;
@@ -17,6 +15,7 @@ public class HabitView extends JFrame {
     private BlockingQueue<Message> queue;
     private ArrayList<Habit> habits;
     private JPanel TaskPanel;
+    private JPanel habitListPanel;
     private GridBagConstraints gbc = new GridBagConstraints();
     //private JPanel panelTwo;
 
@@ -72,7 +71,7 @@ public class HabitView extends JFrame {
         habits.add(habit3);
 
 
-        this.setPreferredSize(new Dimension(700,700));
+        this.setPreferredSize(new Dimension(600,600));
         this.setLayout(new BorderLayout());
 
 
@@ -81,6 +80,7 @@ public class HabitView extends JFrame {
         //main display panel in the middle.
         JPanel mainDisplayPanel = new JPanel();
         mainDisplayPanel.setLayout(new GridBagLayout());
+        mainDisplayPanel.setBackground(new Color(242, 232, 255));
         mainDisplayPanel.setSize(400,400);
         gbc.insets = new Insets(2,2,2,2);
 
@@ -104,19 +104,43 @@ public class HabitView extends JFrame {
         }
 
 
-        JPanel habitListPanel = new JPanel();
+        habitListPanel = new JPanel();
         habitListPanel.setLayout(new FlowLayout());
         for(int i =0; i < habits.size(); i++){
             JButton btn = new JButton(habits.get(i).getTitle());
             habitListPanel.add(btn);
         }
+
+
+        JPanel inputPanel  = new JPanel();
+        JLabel addNewHabitLabel = new JLabel("Add New Habit");
+        TextField textField = new TextField(10);
+        JButton addButton = new JButton("Add");
+
+        addButton.addActionListener(event -> {
+            try {
+                String title = textField.getText();
+                textField.setText("");
+                this.queue.put(new AddHabitMessage(title)); // <--- adding Add New Task message to the queue
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        });
+
+
+        inputPanel.add(addNewHabitLabel);
+        inputPanel.add(textField);
+        inputPanel.add(addButton);
         //habitListPanel.add()
 
         //mainDisplayPanel.add(titleLabel,gbc);
 
 
-
-        this.add(habitListPanel, BorderLayout.SOUTH);
+        JPanel bottomPanel = new JPanel(new GridLayout(2,1));
+        bottomPanel.add(inputPanel);
+        bottomPanel.add(habitListPanel);
+        this.add(bottomPanel, BorderLayout.SOUTH);
+        //this.add(bottomPanel,BorderLayout.CENTER);
         this.add(mainDisplayPanel,BorderLayout.CENTER);
         this.pack();
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -125,12 +149,13 @@ public class HabitView extends JFrame {
 
     public void change(ArrayList<Habit> habits) {
         // TODO: do all the updates and repaint
-
+        System.out.println("In change");
         this.habits = habits;
-        TaskPanel.removeAll();
+        habitListPanel.removeAll();
         for(int i=0; i < habits.size(); i++){
             String title = ((Habit)habits.get(i)).getTitle();
-            TaskPanel.add(new TaskButton(new Task(title)));
+
+            habitListPanel.add(new TaskButton(new Task(title)));
             //TaskPanel.add(new JLabel(title));
         }
 

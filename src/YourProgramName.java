@@ -16,6 +16,7 @@ import java.util.concurrent.LinkedBlockingQueue;
 
 public class YourProgramName {
     private static BlockingQueue<Message> queue = new LinkedBlockingQueue<>();
+    //private static BlockingQueue<Message> queue2 = new LinkedBlockingQueue<>();
     private static View view;
     private static TaskList model;
     public static ImportantTaskList modelImportant; //create new model for important values
@@ -28,17 +29,19 @@ public class YourProgramName {
         modelImportant = new ImportantTaskList();
 
         view = View.init(queue,model.getWholeTasks(), modelImportant.getTasksImportant());
-       // habitView = HabitView.init(queue, habitsModel);
+        habitView = HabitView.init(queue, habitsModel);
 
-        Controller controller = new Controller(view, model.getWholeTasks(), modelImportant.getTasksImportant(), queue);
+        Controller controller = new Controller(view,habitView, model.getWholeTasks(), modelImportant.getTasksImportant(),habitsModel, queue);
         //HabitController habitController = new HabitController(habitView,habitsModel, queue);
 
         controller.mainLoop();
         //habitController.mainLoop();
 
         view.dispose();
-        //habitView.dispose();
+        habitView.dispose();
+
         queue.clear();
+
     }
 
 }

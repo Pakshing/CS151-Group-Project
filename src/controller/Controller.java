@@ -2,6 +2,7 @@ package controller;
 
 import model.Model;
 import model.TaskList;
+import view.HabitView;
 import view.View;
 
 import java.util.ArrayList;
@@ -10,21 +11,27 @@ import java.util.List;
 import java.util.concurrent.BlockingQueue;
 import model.*;
 
+
 public class Controller {
     private BlockingQueue<Message> queue; //queue.take(), queue.put();
-    private View view; // Direct reference to view
+    private View toDoView; // Direct reference to view
+    private HabitView habitView;
     private ArrayList<Task> model; // Direct reference to model
     private ArrayList<Task> imodel;
-    private GameInfo gameInfo; // Direct reference to the state of the Game/Application
+    private ArrayList<Habit> habitModel;
+
 
     private List<Valve> valves = new LinkedList<Valve>();
 
-    public Controller(View view, ArrayList<Task> wholeTasks, ArrayList<Task> model, BlockingQueue<Message> queue) {
-        this.view = view;
+    public Controller(View view, HabitView habitView,ArrayList<Task> wholeTasks, ArrayList<Task> model, ArrayList<Habit> habits, BlockingQueue<Message> queue) {
+        this.toDoView = view;
+        this.habitView = habitView;
         this.model = wholeTasks;
         this.queue = queue;
         this.imodel = model;
+        this.habitModel = habits;
         valves.add(new AddNewTaskValve());
+        valves.add(new AddNewHabitValve());
         //valves.add(new DoNewGameValve());
         //valves.add(new DoHitValve());
 
@@ -73,7 +80,7 @@ public class Controller {
                 String title = ((AddTaskMessage) message).getTitle();
                 Task task = new Task(title);
                 imodel.add(task);
-                view.changeImp(imodel);
+                toDoView.changeImp(imodel);
                 return ValveResponse.EXECUTED;
             }
             else
@@ -81,40 +88,28 @@ public class Controller {
                 String title = ((AddTaskMessage) message).getTitle();
                 Task task = new Task(title);
                 model.add(task);
-                view.change(model);
+                toDoView.change(model);
                 return ValveResponse.EXECUTED;
                 }
             //return null;
         }
     }
-    /*
-    private class DoNewGameValve implements Valve {
+    private class AddNewHabitValve implements Valve{
+        //make the class object here
         @Override
         public ValveResponse execute(Message message) {
-            if (message.getClass() != NewGameMessage.class) {
+            System.out.println("ValveRes");
+            if(message.getClass() != AddHabitMessage.class){
+                System.out.println("Missed from valve");
                 return ValveResponse.MISS;
             }
-            // otherwise it means that it is a NewGameMessage message
-            // actions in Model
-            System.out.println("Do new Game!");
-            // actions in View
+            String title = ((AddHabitMessage)message).getTitle();
+            Habit habit = new Habit(title);
+            habitModel.add(habit);
+            habitView.change(habitModel);
             return ValveResponse.EXECUTED;
         }
     }
-
-    private class DoHitValve implements Valve {
-        @Override
-        public ValveResponse execute(Message message) {
-            if (message.getClass() != HitMessage.class) {
-                return ValveResponse.MISS;
-            }
-            // otherwise message is of HitMessage type
-            // actions in Model and View
-            return ValveResponse.EXECUTED;
-        }
-    }
-
-     */
 
 }
 

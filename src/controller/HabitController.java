@@ -15,7 +15,6 @@ public class HabitController {
     private BlockingQueue<Message> queue; //queue.take(), queue.put();
     private HabitView habitView; // Direct reference to view
     private ArrayList<Habit> model; // Direct reference to model
-    private GameInfo gameInfo; // Direct reference to the state of the Game/Application
     private List<Valve> valves = new LinkedList<Valve>();
 
 
@@ -24,8 +23,6 @@ public class HabitController {
         this.model = model;
         this.queue = queue;
         valves.add(new AddNewHabitValve());
-        //valves.add(new DoNewGameValve());
-        //valves.add(new DoHitValve());
 
     }
 
@@ -34,6 +31,7 @@ public class HabitController {
         Message message = null;
         while (response != ValveResponse.FINISH) {
             try {
+                System.out.println("in main");
                 message = queue.take(); // <--- take next message from the queue
             } catch (InterruptedException e) {
                 e.printStackTrace();
@@ -61,11 +59,13 @@ public class HabitController {
         //make the class object here
         @Override
         public ValveResponse execute(Message message) {
-            if(message.getClass() != AddTaskMessage.class){
+            System.out.println("ValveRes");
+            if(message.getClass() != AddHabitMessage.class){
+                System.out.println("Missed from valve");
                 return ValveResponse.MISS;
             }
             String title = ((AddHabitMessage)message).getTitle();
-            Habit habit = new Habit(title );
+            Habit habit = new Habit(title);
             model.add(habit);
             habitView.change(model);
             return ValveResponse.EXECUTED;

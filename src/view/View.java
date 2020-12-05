@@ -80,6 +80,8 @@ public class View extends JFrame {
         inputPanel.add(addToImportantButton, BorderLayout.EAST);
         inputPanel.add(addToRegularButton,BorderLayout.WEST);
 
+
+
         //for regular tasks
         addToRegularButton.addActionListener(event -> {
             try {
