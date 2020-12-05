@@ -14,14 +14,16 @@ public class Controller {
     private BlockingQueue<Message> queue; //queue.take(), queue.put();
     private View view; // Direct reference to view
     private ArrayList<Task> model; // Direct reference to model
+    private ArrayList<Task> imodel;
     private GameInfo gameInfo; // Direct reference to the state of the Game/Application
 
     private List<Valve> valves = new LinkedList<Valve>();
 
-    public Controller(View view, ArrayList<Task> model, BlockingQueue<Message> queue) {
+    public Controller(View view, ArrayList<Task> wholeTasks, ArrayList<Task> model, BlockingQueue<Message> queue) {
         this.view = view;
-        this.model = model;
+        this.model = wholeTasks;
         this.queue = queue;
+        this.imodel = model;
         valves.add(new AddNewTaskValve());
         //valves.add(new DoNewGameValve());
         //valves.add(new DoHitValve());
@@ -66,11 +68,23 @@ public class Controller {
             if(message.getClass() != AddTaskMessage.class){
                 return ValveResponse.MISS;
             }
-            String title = ((AddTaskMessage)message).getTitle();
-            Task task = new Task(title );
-            model.add(task);
-            view.change(model);
-            return ValveResponse.EXECUTED;
+            if (((AddTaskMessage) message).getImportant() == 1)
+            {
+                String title = ((AddTaskMessage) message).getTitle();
+                Task task = new Task(title);
+                imodel.add(task);
+                view.changeImp(imodel);
+                return ValveResponse.EXECUTED;
+            }
+            else
+                {
+                String title = ((AddTaskMessage) message).getTitle();
+                Task task = new Task(title);
+                model.add(task);
+                view.change(model);
+                return ValveResponse.EXECUTED;
+                }
+            //return null;
         }
     }
     /*

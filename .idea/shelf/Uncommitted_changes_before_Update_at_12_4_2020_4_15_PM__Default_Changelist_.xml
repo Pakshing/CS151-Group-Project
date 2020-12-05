@@ -1,0 +1,54 @@
+<changelist name="Uncommitted_changes_before_Update_at_12_4_2020_4_15_PM_[Default_Changelist]" date="1607127762076" recycled="true" deleted="true">
+  <option name="PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_12_4_2020_4_15_PM_[Default_Changelist]/shelved.patch" />
+  <option name="DESCRIPTION" value="Uncommitted changes before Update at 12/4/2020 4:15 PM [Default Changelist]" />
+  <binary>
+    <option name="BEFORE_PATH" value="out/production/CS151_TEAM_LION/controller/Controller$DoNewGameValve.class" />
+    <option name="AFTER_PATH" value="out/production/CS151_TEAM_LION/controller/Controller$DoNewGameValve.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_12_4_2020_4_15_PM_[Default_Changelist]/Controller$DoNewGameValve.class" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" value="out/production/CS151_TEAM_LION/view/View.class" />
+    <option name="AFTER_PATH" value="out/production/CS151_TEAM_LION/view/View.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_12_4_2020_4_15_PM_[Default_Changelist]/View.class" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" value="out/production/CS151_TEAM_LION/controller/Controller$AddNewTaskValve.class" />
+    <option name="AFTER_PATH" value="out/production/CS151_TEAM_LION/controller/Controller$AddNewTaskValve.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_12_4_2020_4_15_PM_[Default_Changelist]/Controller$AddNewTaskValve.class" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" value="out/production/CS151_TEAM_LION/YourProgramName.class" />
+    <option name="AFTER_PATH" value="out/production/CS151_TEAM_LION/YourProgramName.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_12_4_2020_4_15_PM_[Default_Changelist]/YourProgramName.class" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" value="out/production/CS151_TEAM_LION/model/ImportantTaskList.class" />
+    <option name="AFTER_PATH" value="out/production/CS151_TEAM_LION/model/ImportantTaskList.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_12_4_2020_4_15_PM_[Default_Changelist]/ImportantTaskList.class" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" value="out/production/CS151_TEAM_LION/controller/AddToRegularMessage.class" />
+    <option name="AFTER_PATH" />
+    <option name="SHELVED_PATH" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" value="out/production/CS151_TEAM_LION/controller/Controller$DoHitValve.class" />
+    <option name="AFTER_PATH" value="out/production/CS151_TEAM_LION/controller/Controller$DoHitValve.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_12_4_2020_4_15_PM_[Default_Changelist]/Controller$DoHitValve.class" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" value="out/production/CS151_TEAM_LION/model/TaskList.class" />
+    <option name="AFTER_PATH" value="out/production/CS151_TEAM_LION/model/TaskList.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_12_4_2020_4_15_PM_[Default_Changelist]/TaskList.class" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" value="out/production/CS151_TEAM_LION/controller/AddTaskMessage.class" />
+    <option name="AFTER_PATH" value="out/production/CS151_TEAM_LION/controller/AddTaskMessage.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_12_4_2020_4_15_PM_[Default_Changelist]/AddTaskMessage.class" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" value="out/production/CS151_TEAM_LION/controller/Controller.class" />
+    <option name="AFTER_PATH" value="out/production/CS151_TEAM_LION/controller/Controller.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_12_4_2020_4_15_PM_[Default_Changelist]/Controller.class" />
+  </binary>
+</changelist>

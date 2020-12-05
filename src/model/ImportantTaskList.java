@@ -21,7 +21,7 @@ public class ImportantTaskList
         return tasksImportant.get(index);
     }
 
-    public ArrayList<Task> getWholeTasks(){
+    public ArrayList<Task> getTasksImportant(){
         return this.tasksImportant;
     }
 

@@ -1,15 +1,16 @@
 
-
+import model.*;
 import controller.Controller;
-import controller.HabitController;
 import controller.Message;
-import model.Habit;
+import model.ImportantTaskList;
 import model.Model;
 import model.TaskList;
-import view.View;
 import view.HabitView;
+import java.util.*;
+import controller.HabitController;
+import model.ImportantTaskList;
+import view.View;
 
-import java.util.ArrayList;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
@@ -17,25 +18,24 @@ public class YourProgramName {
     private static BlockingQueue<Message> queue = new LinkedBlockingQueue<>();
     private static View view;
     private static TaskList model;
+    public static ImportantTaskList modelImportant; //create new model for important values
     private static ArrayList<Habit> habitsModel;
     private static HabitView habitView;
 
     public static void main(String[] args) {
-        habitsModel = new ArrayList<Habit>();
         model = new TaskList();
-        //view = View.init(queue,model.getWholeTasks());
+        habitsModel = new ArrayList<Habit>();
+        modelImportant = new ImportantTaskList();
+        view = View.init(queue,model.getWholeTasks(), modelImportant.getTasksImportant());
         habitView = HabitView.init(queue, habitsModel);
-
-        //model.attach(view);
-        //Controller controller = new Controller(view, model.getWholeTasks(), queue);
+        Controller controller = new Controller(view, model.getWholeTasks(), modelImportant.getTasksImportant(), queue);
         HabitController habitController = new HabitController(habitView,habitsModel, queue);
-
-        //controller.mainLoop();
+        controller.mainLoop();
         habitController.mainLoop();
-
+        view.dispose();
         habitView.dispose();
-       // view.dispose();
         queue.clear();
     }
+
 }
 
