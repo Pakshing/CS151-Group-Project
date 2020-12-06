@@ -19,12 +19,10 @@ import model.*;
 public class HabitView extends JFrame {
     private BlockingQueue<Message> queue;
     private ArrayList<Habit> habits;
-    //private JPanel TaskPanel;
+
     private JPanel habitListPanel;
     private GridBagConstraints gbc = new GridBagConstraints();
     private JPanel mainDisplayPanel;
-    //private HabitView habitView;
-    //private JPanel panelTwo;
     /**
      *
      * @param queue message queue
