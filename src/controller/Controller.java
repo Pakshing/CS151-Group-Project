@@ -10,6 +10,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.BlockingQueue;
 import model.*;
+import java.io.*;
 
 
 public class Controller {
@@ -57,10 +58,6 @@ public class Controller {
         }
     }
 
-    private void updateGameInfo() {
-
-    }
-
     private interface Valve {
         /**
          * Performs certain action in response to message
@@ -106,7 +103,62 @@ public class Controller {
             String title = ((AddHabitMessage)message).getTitle();
             Habit habit = new Habit(title);
             habitModel.add(habit);
+
+
+            File f = new File("obj.txt");
+            try{
+                FileOutputStream fos = new FileOutputStream(f);
+                try{
+                    ObjectOutputStream oos = new ObjectOutputStream(fos);
+                    oos.writeInt(habitModel.size());
+                    for(int i=0; i < habitModel.size();i++){
+                        oos.writeObject(habitModel.get(i));
+                    }
+                    oos.close();
+                    System.out.println("Saved the habit with name: " + habit.getTitle());
+                }catch (IOException error){
+                    System.out.println("IOEception");
+                }
+
+            }catch (FileNotFoundException error){
+                System.out.println("File not found");
+            }
+
+            ArrayList<Habit> inputList = new ArrayList<>();
+            try{
+                FileInputStream fis = new FileInputStream(f);
+                try{
+                    ObjectInputStream ois =  new ObjectInputStream(fis);
+                    try{
+
+                        int habitSize = ois.readInt();
+                        for(int i=0; i < habitSize; i++){
+                            inputList.add((Habit)ois.readObject()) ;
+                        }
+
+
+                    }catch (ClassNotFoundException error){
+                        System.out.println("Input stream: ClassNotFoundException error");
+                    }
+
+                }catch (IOException error){
+                    System.out.println("input stream: IOException error");
+                }
+
+
+            }catch (FileNotFoundException err){
+                System.out.println("input stream: FileNotFound error");
+            }
+
+            System.out.println("\nRead From input stream\n");
+            for(int i=0;i<inputList.size();i++){
+                System.out.println(inputList.get(i).toString());
+            }
+
             habitView.change(habitModel);
+
+
+
             return ValveResponse.EXECUTED;
         }
     }

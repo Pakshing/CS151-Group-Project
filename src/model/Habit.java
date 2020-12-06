@@ -1,8 +1,9 @@
 package model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Habit {
+public class Habit implements Serializable {
     private String title;
     private ArrayList<Integer> daysOfCompleted;
 
@@ -25,5 +26,11 @@ public class Habit {
 
     public void setDaysOfCompleted(ArrayList<Integer> daysOfCompleted) {
         this.daysOfCompleted = daysOfCompleted;
+    }
+
+    @Override
+    public String toString() {
+        String res = title + ": " + daysOfCompleted.size();
+        return res;
     }
 }
