@@ -1,8 +1,10 @@
 package controller;
+
 import model.Model;
 import model.TaskList;
 import view.HabitView;
 import view.View;
+
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -24,7 +26,6 @@ public class Controller {
 
 
     private List<Valve> valves = new LinkedList<Valve>();
-
     /**
      *
      * @param view the view object to be displayed for our program
@@ -47,7 +48,6 @@ public class Controller {
         //valves.add(new DoHitValve());
 
     }
-
     /**
      * Our main loop here has the job of handling valve repsonses in order to control data flow in the controller.
      */
@@ -70,14 +70,12 @@ public class Controller {
             }
         }
     }
-
     /**
      * Performs a certain action in response to message, this is a sample valve.
      */
     private interface Valve {
         public ValveResponse execute(Message message);
     }
-
     /**
      * AddNewTaskValve implements valves, so it's job is to use valves to control data flow of tasks into the model or imodel of our program.
      * return values are EXECUTION or MISS.
@@ -105,9 +103,9 @@ public class Controller {
                 toDoView.change(model);
                 return ValveResponse.EXECUTED;
             }
+            //return null;
         }
     }
-
     /**
      * AddNewHabitValve implements valves, so it's job is to use valves to control data flow of tasks into the habit model of our program.
      * Here we are also interacting with a class that uses serialiable interface to print into a file and read out of a file.
@@ -126,10 +124,18 @@ public class Controller {
             Habit habit = new Habit(title);
             habitModel.add(habit);
 
-
             File f = new File("obj.txt");
             try{
-                FileOutputStream fos = new FileOutputStream(f);
+                f.createNewFile();
+            }catch (IOException err){
+                System.out.println("file already exists");
+                System.out.println("createNewFile: IOException\n");
+            }
+
+
+
+            try{
+                FileOutputStream fos = new FileOutputStream(f,false);
                 try{
                     ObjectOutputStream oos = new ObjectOutputStream(fos);
                     oos.writeInt(habitModel.size());
