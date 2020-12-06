@@ -11,13 +11,22 @@ import java.util.List;
 import java.util.concurrent.BlockingQueue;
 import model.*;
 
+/**
+ * This controller was being used for trial/error, but is not being used anymore. So really you can ignore this as we aren't using it anymore.
+ * The job of this is to have a seperate controller for handlind habits
+ */
 public class HabitController {
     private BlockingQueue<Message> queue; //queue.take(), queue.put();
     private HabitView habitView; // Direct reference to view
     private ArrayList<Habit> model; // Direct reference to model
     private List<Valve> valves = new LinkedList<Valve>();
 
-
+    /**
+     *
+     * @param view create a view for habits
+     * @param model create a model for habits
+     * @param queue queue for the message queue
+     */
     public HabitController(HabitView view, ArrayList<Habit> model, BlockingQueue<Message> queue) {
         this.habitView = view;
         this.model = model;
@@ -26,6 +35,9 @@ public class HabitController {
 
     }
 
+    /**
+     * main loop for the valves and message queue
+     */
     public void mainLoop() {
         ValveResponse response = ValveResponse.EXECUTED;
         Message message = null;
@@ -47,7 +59,9 @@ public class HabitController {
         }
     }
 
-
+    /**
+     * valve for message queue execution
+     */
     private interface Valve {
         /**
          * Performs certain action in response to message
@@ -55,6 +69,9 @@ public class HabitController {
         public ValveResponse execute(Message message);
     }
 
+    /**
+     * valve for adding new habit
+     */
     private class AddNewHabitValve implements Valve{
         //make the class object here
         @Override

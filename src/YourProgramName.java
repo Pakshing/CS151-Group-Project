@@ -14,6 +14,10 @@ import view.View;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
+/**
+ * Class of our program that implements blocking queue.
+ * Initialize view and habitView, and our models we will be using.
+ */
 public class YourProgramName {
     private static BlockingQueue<Message> queue = new LinkedBlockingQueue<>();
     //private static BlockingQueue<Message> queue2 = new LinkedBlockingQueue<>();
@@ -23,6 +27,13 @@ public class YourProgramName {
     private static ArrayList<Habit> habitsModel;
     private static HabitView habitView;
 
+    /**
+     * declaring our different models
+     * declaring our view and its parameters of different task types, habitView and its model
+     * declaring our controller and its six parameters, which are the original view, habits view, models regular task list, models important task list, habits model, and the message queue for execution and miss returns.
+     * @param args default param for main
+     * We finish up by cleaning up our different views via dispose and clear methods.
+     */
     public static void main(String[] args) {
         model = new TaskList();
         habitsModel = new ArrayList<Habit>();

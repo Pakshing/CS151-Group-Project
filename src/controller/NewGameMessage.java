@@ -1,5 +1,8 @@
 package controller;
 
+/**
+ * Not being used in our program, came with the default code provided by professor Surmenok.
+ */
 public class NewGameMessage implements Message {
 }
 

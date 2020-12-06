@@ -7,9 +7,18 @@ import java.awt.*;
 import java.util.*;
 import java.util.List;
 import model.*;
+
+/**
+ * create box view for tasks to be displayed
+ */
 public class TaskView extends JPanel {
     private ArrayList<Task> tasks;
 
+    /**
+     *
+     * @param Tasks return tasks provided to this method.
+     *              add button
+     */
     public TaskView(ArrayList<Task> Tasks){
         this.tasks = Tasks;
 
@@ -22,6 +31,10 @@ public class TaskView extends JPanel {
         this.revalidate();
     }
 
+    /**
+     * method not being used
+     * @param t for whatever index the task is.
+     */
     public void updateTaskView(Task t){
         System.out.println("updateTaskView: " + tasks.size());
         System.out.println(tasks.size());
@@ -30,11 +43,6 @@ public class TaskView extends JPanel {
         repaint();
     }
 
-//    public void addTask(Task task){
-//        tasks.add(task);
-//        this.add(new TaskButton(task));
-//        this.revalidate();;
-//    }
 
 
 
