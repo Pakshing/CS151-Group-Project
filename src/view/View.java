@@ -9,6 +9,10 @@ import java.util.ArrayList;
 import java.util.concurrent.BlockingQueue;
 import model.*;
 
+/**
+ *  creating view object which uses parts of JFrame
+ *  View will have different panels for different types of tasks ie: important or not important
+ */
 public class View extends JFrame {
     private BlockingQueue<Message> queue;
     private ArrayList<Task> tasks;
@@ -17,13 +21,24 @@ public class View extends JFrame {
     private JPanel ImportantTasksPanel;
 
 
-
+    /**
+     *
+     * @param queue message queue execution or miss returned value
+     * @param tasks whatever task is supplied to this method
+     * @param tasksImportant whichever important task is supplied to this method
+     * @return
+     */
     public static View init(BlockingQueue<Message> queue, ArrayList<Task> tasks, ArrayList<Task> tasksImportant) {
         // Create object of type view
         return new View(queue,tasks, tasksImportant);
     }
 
-
+    /**
+     * Creating layout and panels with buttons/action listneners.
+     * @param queue message queue exection or miss return values.
+     * @param tasks the normal tasks supplied to this method.
+     * @param tasksImportant the important tasks supplied to this method.
+     */
     private View(BlockingQueue<Message> queue, ArrayList<Task> tasks, ArrayList<Task> tasksImportant) {
         this.queue = queue;
         this.tasks = tasks;
@@ -106,7 +121,10 @@ public class View extends JFrame {
     }
 
 
-
+    /**
+     * change the view based on what normal tasks are supplied
+     * @param tasks based on normal tasks
+     */
     public void change(ArrayList<Task> tasks) {
         // TODO: do all the updates and repaint
 
@@ -123,6 +141,10 @@ public class View extends JFrame {
         this.repaint();
     }
 
+    /**
+     * change the important tasks view based on what is supplied
+     * @param tasks based on important tasks
+     */
     public void changeImp(ArrayList<Task> tasks) {
         this.tasks = tasks;
         ImportantTasksPanel.removeAll();
@@ -136,7 +158,9 @@ public class View extends JFrame {
     }
 
 
-
+    /**
+     * clean up all items on screen, but this isnt being used because we are using revalidate and repaint methods shown above.
+     */
     public void dispose() {
         // TODO: clear all the resources
         this.dispose();

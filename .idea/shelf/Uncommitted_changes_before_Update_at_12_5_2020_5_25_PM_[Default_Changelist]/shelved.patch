@@ -1,0 +1,1025 @@
+Index: src/view/inputPanel.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package view;\r\n\r\nimport javax.swing.*;\r\n\r\npublic class inputPanel extends JPanel {\r\n\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/view/inputPanel.java	(revision d7d72203dad7b0c0e276333f40f71bca362bfd3f)
++++ src/view/inputPanel.java	(date 1607217141547)
+@@ -2,6 +2,9 @@
+ 
+ import javax.swing.*;
+ 
++/**
++ * not being used by our program. please ignore. This is implemented elsewhere.
++ */
+ public class inputPanel extends JPanel {
+ 
+ }
+Index: src/view/TaskView.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package view;\r\n\r\nimport model.Task;\r\n\r\nimport javax.swing.*;\r\nimport java.awt.*;\r\nimport java.util.*;\r\nimport java.util.List;\r\nimport model.*;\r\npublic class TaskView extends JPanel {\r\n    private ArrayList<Task> tasks;\r\n\r\n    public TaskView(ArrayList<Task> Tasks){\r\n        this.tasks = Tasks;\r\n\r\n        //this.add(new JLabel(\"To-Do\"));\r\n        this.setLayout(new BoxLayout(this,BoxLayout.Y_AXIS));\r\n        for(int i=0; i < tasks.size();i++){\r\n            this.add(new TaskButton(tasks.get(i)));\r\n        }\r\n\r\n        this.revalidate();\r\n    }\r\n\r\n    public void updateTaskView(Task t){\r\n        System.out.println(\"updateTaskView: \" + tasks.size());\r\n        System.out.println(tasks.size());\r\n        tasks.add(this.tasks.size()-1, t);\r\n        System.out.println(this.tasks);\r\n        repaint();\r\n    }\r\n\r\n//    public void addTask(Task task){\r\n//        tasks.add(task);\r\n//        this.add(new TaskButton(task));\r\n//        this.revalidate();;\r\n//    }\r\n\r\n\r\n\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/view/TaskView.java	(revision d7d72203dad7b0c0e276333f40f71bca362bfd3f)
++++ src/view/TaskView.java	(date 1607217589129)
+@@ -7,9 +7,18 @@
+ import java.util.*;
+ import java.util.List;
+ import model.*;
++
++/**
++ * create box view for tasks to be displayed
++ */
+ public class TaskView extends JPanel {
+     private ArrayList<Task> tasks;
+ 
++    /**
++     *
++     * @param Tasks return tasks provided to this method.
++     *              add button
++     */
+     public TaskView(ArrayList<Task> Tasks){
+         this.tasks = Tasks;
+ 
+@@ -22,6 +31,10 @@
+         this.revalidate();
+     }
+ 
++    /**
++     * method not being used
++     * @param t for whatever index the task is.
++     */
+     public void updateTaskView(Task t){
+         System.out.println("updateTaskView: " + tasks.size());
+         System.out.println(tasks.size());
+@@ -30,11 +43,6 @@
+         repaint();
+     }
+ 
+-//    public void addTask(Task task){
+-//        tasks.add(task);
+-//        this.add(new TaskButton(task));
+-//        this.revalidate();;
+-//    }
+ 
+ 
+ 
+Index: src/view/View.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package view;\r\n\r\nimport controller.AddTaskMessage;\r\nimport controller.HitMessage;\r\nimport controller.Message;\r\nimport controller.NewGameMessage;\r\n\r\nimport javax.swing.*;\r\nimport java.awt.*;\r\nimport java.util.ArrayList;\r\nimport java.util.concurrent.BlockingQueue;\r\nimport model.*;\r\n\r\npublic class View extends JFrame {\r\n    TaskView taskView;\r\n    private JFrame gameFrame;\r\n    private BlockingQueue<Message> queue;\r\n    private ArrayList<Task> tasks;\r\n    private ArrayList<Task> tasksImportant;\r\n    private JPanel TaskPanel;\r\n    private JPanel ImportantTasksPanel;\r\n   // private JList<Task> ImportantTasksPanel;\r\n\r\n\r\n    public static View init(BlockingQueue<Message> queue, ArrayList<Task> tasks, ArrayList<Task> tasksImportant) {\r\n        // Create object of type view\r\n        return new View(queue,tasks, tasksImportant);\r\n    }\r\n\r\n\r\n    private View(BlockingQueue<Message> queue, ArrayList<Task> tasks, ArrayList<Task> tasksImportant) {\r\n        this.queue = queue;\r\n        this.tasks = tasks;\r\n        // TODO:\r\n        // you should initalize JFrame and show it,\r\n        // JFrame should be able to add Messages to queue\r\n        // JFrame can be in a separate class or created JFrame with all the elements in this class\r\n        // or you can make View a subclass of JFrame by extending it\r\n\r\n        this.setPreferredSize(new Dimension(500,500));\r\n        this.setLayout(new BorderLayout());\r\n\r\n        TaskPanel = new JPanel();\r\n        ImportantTasksPanel = new JPanel();\r\n\r\n        // Set the BoxLayout to be X_AXIS: from left to right\u2028\r\n        BoxLayout boxlayout = new BoxLayout(TaskPanel, BoxLayout.Y_AXIS);\r\n        TaskPanel.setLayout(boxlayout);\r\n        TaskPanel.setSize(100,200);\r\n        TaskPanel.setBackground(new Color(217, 249, 255));\r\n\r\n        BoxLayout boxlayout2 = new BoxLayout(ImportantTasksPanel, BoxLayout.Y_AXIS);\r\n        ImportantTasksPanel.setLayout(boxlayout2);\r\n        ImportantTasksPanel.setSize(100,200);\r\n        ImportantTasksPanel.setBackground(new Color(217, 223, 255));\r\n\r\n        JLabel titleLabel = new JLabel(\"To-Do\",SwingConstants.CENTER);\r\n        this.add(titleLabel,BorderLayout.NORTH);\r\n\r\n        JPanel mainDisplayPanel = new JPanel(new GridLayout(1,2));\r\n        //mainDisplayPanel.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);\r\n        mainDisplayPanel.add(TaskPanel);\r\n        mainDisplayPanel.add(ImportantTasksPanel);\r\n        //this.add(ImportantTasksPanel);\r\n\r\n       this.add(mainDisplayPanel,BorderLayout.CENTER);\r\n\r\n\r\n\r\n\r\n        JPanel inputPanel = new JPanel();\r\n        inputPanel.setLayout(new BorderLayout());\r\n        inputPanel.add(new JLabel(\"Add New Task:\"),BorderLayout.NORTH);\r\n        JTextField addNewTaskField = new JTextField(10);\r\n        addNewTaskField.setText(\"\");\r\n        inputPanel.add(addNewTaskField,BorderLayout.NORTH);\r\n\r\n        JButton addToRegularButton = new JButton(\"Add To Regular\");\r\n        JButton addToImportantButton = new JButton(\"Add To Important\");\r\n        inputPanel.add(addToImportantButton, BorderLayout.EAST);\r\n        inputPanel.add(addToRegularButton,BorderLayout.WEST);\r\n\r\n\r\n\r\n        //for regular tasks\r\n        addToRegularButton.addActionListener(event -> {\r\n            try {\r\n                String title = addNewTaskField.getText();\r\n                addNewTaskField.setText(\"\");\r\n                this.queue.put(new AddTaskMessage(title)); // <--- adding Add New Task message to the queue\r\n            } catch (InterruptedException e) {\r\n                e.printStackTrace();\r\n            }\r\n        });\r\n\r\n        //for Important tasks\r\n\r\n        addToImportantButton.addActionListener(event -> {\r\n            try {\r\n                String title = addNewTaskField.getText();\r\n                addNewTaskField.setText(\"\");\r\n                this.queue.put(new AddTaskMessage(title, 1)); // <--- adding to queue\r\n            } catch (InterruptedException e) {\r\n                e.printStackTrace();\r\n            }\r\n        });\r\n\r\n        this.add(inputPanel,BorderLayout.SOUTH);\r\n        this.pack();\r\n        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);\r\n        this.setVisible(true);\r\n    }\r\n\r\n\r\n\r\n    public void change(ArrayList<Task> tasks) {\r\n        // TODO: do all the updates and repaint\r\n\r\n        this.tasks = tasks;\r\n        TaskPanel.removeAll();\r\n        TaskPanel.add(new JLabel(\"Regular\",SwingConstants.CENTER),BorderLayout.NORTH);\r\n        for(int i=0; i < tasks.size(); i++){\r\n            String title = ((Task)tasks.get(i)).getTitle();\r\n            TaskPanel.add(new TaskButton(new Task(title)));\r\n\r\n        }\r\n\r\n        this.revalidate();\r\n        this.repaint();\r\n    }\r\n\r\n    public void changeImp(ArrayList<Task> tasks) {\r\n        this.tasks = tasks;\r\n        ImportantTasksPanel.removeAll();\r\n        ImportantTasksPanel.add(new JLabel(\"Important\",SwingConstants.CENTER),BorderLayout.NORTH);\r\n        for(int i=0; i < tasks.size(); i++){\r\n            String title = ((Task)tasks.get(i)).getTitle();\r\n            ImportantTasksPanel.add(new TaskButton(new Task(title)));\r\n        }\r\n        //loop to print the important tasks\r\n        /*\r\n        for(int i=0; i < tasksImportant.size(); i++){\r\n            String title = ((Task)tasks.get(i)).getTitle();\r\n            ImportantTasksPanel.add(new JLabel(title));\r\n        }\r\n        */\r\n        this.revalidate();\r\n        this.repaint();\r\n    }\r\n\r\n\r\n\r\n    public void dispose() {\r\n        // TODO: clear all the resources\r\n        // for example, gameFrame.dispose();\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/view/View.java	(revision d7d72203dad7b0c0e276333f40f71bca362bfd3f)
++++ src/view/View.java	(date 1607217848119)
+@@ -11,6 +11,10 @@
+ import java.util.concurrent.BlockingQueue;
+ import model.*;
+ 
++/**
++ *  creating view object which uses parts of JFrame
++ *  View will have different panels for different types of tasks ie: important or not important
++ */
+ public class View extends JFrame {
+     TaskView taskView;
+     private JFrame gameFrame;
+@@ -21,13 +25,24 @@
+     private JPanel ImportantTasksPanel;
+    // private JList<Task> ImportantTasksPanel;
+ 
+-
++    /**
++     *
++     * @param queue message queue execution or miss returned value
++     * @param tasks whatever task is supplied to this method
++     * @param tasksImportant whichever important task is supplied to this method
++     * @return
++     */
+     public static View init(BlockingQueue<Message> queue, ArrayList<Task> tasks, ArrayList<Task> tasksImportant) {
+         // Create object of type view
+         return new View(queue,tasks, tasksImportant);
+     }
+ 
+-
++    /**
++     * Creating layout and panels with buttons/action listneners.
++     * @param queue message queue exection or miss return values.
++     * @param tasks the normal tasks supplied to this method.
++     * @param tasksImportant the important tasks supplied to this method.
++     */
+     private View(BlockingQueue<Message> queue, ArrayList<Task> tasks, ArrayList<Task> tasksImportant) {
+         this.queue = queue;
+         this.tasks = tasks;
+@@ -112,7 +127,10 @@
+     }
+ 
+ 
+-
++    /**
++     * change the view based on what normal tasks are supplied
++     * @param tasks based on normal tasks
++     */
+     public void change(ArrayList<Task> tasks) {
+         // TODO: do all the updates and repaint
+ 
+@@ -129,6 +147,10 @@
+         this.repaint();
+     }
+ 
++    /**
++     * change the important tasks view based on what is supplied
++     * @param tasks based on important tasks
++     */
+     public void changeImp(ArrayList<Task> tasks) {
+         this.tasks = tasks;
+         ImportantTasksPanel.removeAll();
+@@ -149,7 +171,9 @@
+     }
+ 
+ 
+-
++    /**
++     * clean up all items on screen, but this isnt being used because we are using revalidate and repaint methods shown above.
++     */
+     public void dispose() {
+         // TODO: clear all the resources
+         // for example, gameFrame.dispose();
+Index: src/YourProgramName.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>\r\nimport model.*;\r\nimport controller.Controller;\r\nimport controller.Message;\r\nimport model.ImportantTaskList;\r\nimport model.Model;\r\nimport model.TaskList;\r\nimport view.HabitView;\r\nimport java.util.*;\r\nimport controller.HabitController;\r\nimport model.ImportantTaskList;\r\nimport view.View;\r\n\r\nimport java.util.concurrent.BlockingQueue;\r\nimport java.util.concurrent.LinkedBlockingQueue;\r\n\r\npublic class YourProgramName {\r\n    private static BlockingQueue<Message> queue = new LinkedBlockingQueue<>();\r\n    //private static BlockingQueue<Message> queue2 = new LinkedBlockingQueue<>();\r\n    private static View view;\r\n    private static TaskList model;\r\n    public static ImportantTaskList modelImportant; //create new model for important values\r\n    private static ArrayList<Habit> habitsModel;\r\n    private static HabitView habitView;\r\n\r\n    public static void main(String[] args) {\r\n        model = new TaskList();\r\n        habitsModel = new ArrayList<Habit>();\r\n        modelImportant = new ImportantTaskList();\r\n\r\n        view = View.init(queue,model.getWholeTasks(), modelImportant.getTasksImportant());\r\n        habitView = HabitView.init(queue, habitsModel);\r\n\r\n        Controller controller = new Controller(view,habitView, model.getWholeTasks(), modelImportant.getTasksImportant(),habitsModel, queue);\r\n        //HabitController habitController = new HabitController(habitView,habitsModel, queue);\r\n\r\n        controller.mainLoop();\r\n        //habitController.mainLoop();\r\n\r\n        view.dispose();\r\n        habitView.dispose();\r\n\r\n        queue.clear();\r\n\r\n    }\r\n\r\n}\r\n\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/YourProgramName.java	(revision d7d72203dad7b0c0e276333f40f71bca362bfd3f)
++++ src/YourProgramName.java	(date 1607214085896)
+@@ -14,6 +14,10 @@
+ import java.util.concurrent.BlockingQueue;
+ import java.util.concurrent.LinkedBlockingQueue;
+ 
++/**
++ * Class of our program that implements blocking queue.
++ * Initialize view and habitView, and our models we will be using.
++ */
+ public class YourProgramName {
+     private static BlockingQueue<Message> queue = new LinkedBlockingQueue<>();
+     //private static BlockingQueue<Message> queue2 = new LinkedBlockingQueue<>();
+@@ -23,6 +27,13 @@
+     private static ArrayList<Habit> habitsModel;
+     private static HabitView habitView;
+ 
++    /**
++     * declaring our different models
++     * declaring our view and its parameters of different task types, habitView and its model
++     * declaring our controller and its six parameters, which are the original view, habits view, models regular task list, models important task list, habits model, and the message queue for execution and miss returns.
++     * @param args default param for main
++     * We finish up by cleaning up our different views via dispose and clear methods.
++     */
+     public static void main(String[] args) {
+         model = new TaskList();
+         habitsModel = new ArrayList<Habit>();
+Index: src/view/HabitView.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package view;\r\n\r\nimport javax.swing.*;\r\n\r\nimport controller.*;\r\n\r\nimport javax.swing.*;\r\nimport java.awt.*;\r\nimport java.util.ArrayList;\r\nimport java.util.concurrent.BlockingQueue;\r\nimport model.*;\r\n\r\n\r\npublic class HabitView extends JFrame {\r\n    private BlockingQueue<Message> queue;\r\n    private ArrayList<Habit> habits;\r\n    private JPanel TaskPanel;\r\n    private JPanel habitListPanel;\r\n    private GridBagConstraints gbc = new GridBagConstraints();\r\n    //private JPanel panelTwo;\r\n\r\n    public static HabitView init(BlockingQueue<Message> queue, ArrayList<Habit> habits) {\r\n        // Create object of type view\r\n        return new HabitView(queue,habits);\r\n    }\r\n\r\n\r\n    private HabitView(BlockingQueue<Message> queue, ArrayList<Habit> habits) {\r\n        this.queue = queue;\r\n        this.habits = habits;\r\n        // TODO:\r\n        // you should initalize JFrame and show it,\r\n        // JFrame should be able to add Messages to queue\r\n        // JFrame can be in a separate class or created JFrame with all the elements in this class\r\n        // or you can make View a subclass of JFrame by extending it\r\n\r\n\r\n\r\n        Habit habit1 = new Habit(\"Exercising\");\r\n        ArrayList<Integer> habit1DaysOfComplete = new ArrayList<>();\r\n        habit1DaysOfComplete.add(1);\r\n        habit1DaysOfComplete.add(2);\r\n        habit1DaysOfComplete.add(3);\r\n        habit1DaysOfComplete.add(9);\r\n        habit1DaysOfComplete.add(10);\r\n        habit1DaysOfComplete.add(21);\r\n        habit1.setDaysOfCompleted(habit1DaysOfComplete);\r\n\r\n        Habit habit2 = new Habit(\"Working Out\");\r\n        ArrayList<Integer> habit2DaysOfComplete = new ArrayList<>();\r\n        habit2DaysOfComplete.add(1);\r\n        habit2DaysOfComplete.add(2);\r\n        habit2DaysOfComplete.add(3);\r\n        habit2DaysOfComplete.add(9);\r\n        habit2DaysOfComplete.add(10);\r\n        habit2DaysOfComplete.add(21);\r\n        habit2.setDaysOfCompleted(habit2DaysOfComplete);\r\n\r\n        Habit habit3 = new Habit(\"Running\");\r\n        ArrayList<Integer> habit3DaysOfComplete = new ArrayList<>();\r\n        habit3DaysOfComplete.add(1);\r\n        habit3DaysOfComplete.add(2);\r\n        habit3DaysOfComplete.add(3);\r\n        habit3DaysOfComplete.add(9);\r\n        habit3DaysOfComplete.add(10);\r\n        habit3DaysOfComplete.add(21);\r\n        habit3.setDaysOfCompleted(habit3DaysOfComplete);\r\n\r\n        habits.add(habit1);\r\n        habits.add(habit2);\r\n        habits.add(habit3);\r\n\r\n\r\n        this.setPreferredSize(new Dimension(600,600));\r\n        this.setLayout(new BorderLayout());\r\n\r\n\r\n        //this.add(new JLabel(\"Habit\",SwingConstants.CENTER),BorderLayout.NORTH);\r\n\r\n        //main display panel in the middle.\r\n        JPanel mainDisplayPanel = new JPanel();\r\n        mainDisplayPanel.setLayout(new GridBagLayout());\r\n        mainDisplayPanel.setBackground(new Color(242, 232, 255));\r\n        mainDisplayPanel.setSize(400,400);\r\n        gbc.insets = new Insets(2,2,2,2);\r\n\r\n        JLabel titleLabel = new JLabel(\"Exercising\");\r\n        gbc.gridx = 3;\r\n        gbc.gridy = 0;\r\n        //gbc.gridwidth =5;\r\n        mainDisplayPanel.add(titleLabel,gbc);\r\n        int indexY = 1;\r\n        int indexX = 0;\r\n        for(int i=0; i < 21;i++){\r\n            if(i % 7 ==0){\r\n                indexY +=1;\r\n                indexX =0;\r\n            }\r\n            gbc.gridx = indexX;\r\n            indexX++;\r\n            gbc.gridy = indexY;\r\n            JButton btn = new JButton(Integer.toString(i+1));\r\n            mainDisplayPanel.add(btn,gbc);\r\n        }\r\n\r\n\r\n        habitListPanel = new JPanel();\r\n        habitListPanel.setLayout(new FlowLayout());\r\n        for(int i =0; i < habits.size(); i++){\r\n            JButton btn = new JButton(habits.get(i).getTitle());\r\n            habitListPanel.add(btn);\r\n        }\r\n\r\n\r\n        JPanel inputPanel  = new JPanel();\r\n        JLabel addNewHabitLabel = new JLabel(\"Add New Habit\");\r\n        TextField textField = new TextField(10);\r\n        JButton addButton = new JButton(\"Add\");\r\n\r\n        addButton.addActionListener(event -> {\r\n            try {\r\n                String title = textField.getText();\r\n                textField.setText(\"\");\r\n                this.queue.put(new AddHabitMessage(title)); // <--- adding Add New Task message to the queue\r\n            } catch (InterruptedException e) {\r\n                e.printStackTrace();\r\n            }\r\n        });\r\n\r\n\r\n        inputPanel.add(addNewHabitLabel);\r\n        inputPanel.add(textField);\r\n        inputPanel.add(addButton);\r\n        //habitListPanel.add()\r\n\r\n        //mainDisplayPanel.add(titleLabel,gbc);\r\n\r\n\r\n        JPanel bottomPanel = new JPanel(new GridLayout(2,1));\r\n        bottomPanel.add(inputPanel);\r\n        bottomPanel.add(habitListPanel);\r\n        this.add(bottomPanel, BorderLayout.SOUTH);\r\n        //this.add(bottomPanel,BorderLayout.CENTER);\r\n        this.add(mainDisplayPanel,BorderLayout.CENTER);\r\n        this.pack();\r\n        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);\r\n        this.setVisible(true);\r\n    }\r\n\r\n    public void change(ArrayList<Habit> habits) {\r\n        // TODO: do all the updates and repaint\r\n        System.out.println(\"In change\");\r\n        this.habits = habits;\r\n        habitListPanel.removeAll();\r\n        for(int i=0; i < habits.size(); i++){\r\n            String title = ((Habit)habits.get(i)).getTitle();\r\n\r\n            habitListPanel.add(new TaskButton(new Task(title)));\r\n            //TaskPanel.add(new JLabel(title));\r\n        }\r\n\r\n        this.revalidate();\r\n        this.repaint();\r\n    }\r\n\r\n    public void dispose() {\r\n        // TODO: clear all the resources\r\n        // for example, gameFrame.dispose();\r\n    }\r\n\r\n\r\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/view/HabitView.java	(revision d7d72203dad7b0c0e276333f40f71bca362bfd3f)
++++ src/view/HabitView.java	(date 1607217122475)
+@@ -1,16 +1,15 @@
+ package view;
+-
+ import javax.swing.*;
+-
+ import controller.*;
+-
+ import javax.swing.*;
+ import java.awt.*;
+ import java.util.ArrayList;
+ import java.util.concurrent.BlockingQueue;
+ import model.*;
+ 
+-
++/**
++ * HabitView is an instance of view in which we display JFrames that pertain to habits rather than tasks.
++ */
+ public class HabitView extends JFrame {
+     private BlockingQueue<Message> queue;
+     private ArrayList<Habit> habits;
+@@ -19,12 +18,22 @@
+     private GridBagConstraints gbc = new GridBagConstraints();
+     //private JPanel panelTwo;
+ 
++    /**
++     *
++     * @param queue message queue
++     * @param habits different objects from habit arraylist
++     * @return the new view of our habits and the message queue result.
++     */
+     public static HabitView init(BlockingQueue<Message> queue, ArrayList<Habit> habits) {
+         // Create object of type view
+         return new HabitView(queue,habits);
+     }
+ 
+-
++    /**
++     * this is the code for our habit view. We set up all of our front-end elements that hook up with our controller/back end code
++     * @param queue message queue
++     * @param habits different objects from habit arrayList
++     */
+     private HabitView(BlockingQueue<Message> queue, ArrayList<Habit> habits) {
+         this.queue = queue;
+         this.habits = habits;
+@@ -35,7 +44,7 @@
+         // or you can make View a subclass of JFrame by extending it
+ 
+ 
+-
++        /*
+         Habit habit1 = new Habit("Exercising");
+         ArrayList<Integer> habit1DaysOfComplete = new ArrayList<>();
+         habit1DaysOfComplete.add(1);
+@@ -69,7 +78,7 @@
+         habits.add(habit1);
+         habits.add(habit2);
+         habits.add(habit3);
+-
++*/
+ 
+         this.setPreferredSize(new Dimension(600,600));
+         this.setLayout(new BorderLayout());
+@@ -147,6 +156,10 @@
+         this.setVisible(true);
+     }
+ 
++    /**
++     * this method is here to change the view of habits, and print out the habit the user has added via title variable
++     * @param habits values in the arrayList
++     */
+     public void change(ArrayList<Habit> habits) {
+         // TODO: do all the updates and repaint
+         System.out.println("In change");
+@@ -162,9 +175,10 @@
+         this.revalidate();
+         this.repaint();
+     }
+-
++/**
++ * clear all resources, not really being used
++ */
+     public void dispose() {
+-        // TODO: clear all the resources
+         // for example, gameFrame.dispose();
+     }
+ 
+Index: src/controller/Controller.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package controller;\r\n\r\nimport model.Model;\r\nimport model.TaskList;\r\nimport view.HabitView;\r\nimport view.View;\r\n\r\nimport java.util.ArrayList;\r\nimport java.util.LinkedList;\r\nimport java.util.List;\r\nimport java.util.concurrent.BlockingQueue;\r\nimport model.*;\r\n\r\n\r\npublic class Controller {\r\n    private BlockingQueue<Message> queue; //queue.take(), queue.put();\r\n    private View toDoView; // Direct reference to view\r\n    private HabitView habitView;\r\n    private ArrayList<Task> model; // Direct reference to model\r\n    private ArrayList<Task> imodel;\r\n    private ArrayList<Habit> habitModel;\r\n\r\n\r\n    private List<Valve> valves = new LinkedList<Valve>();\r\n\r\n    public Controller(View view, HabitView habitView,ArrayList<Task> wholeTasks, ArrayList<Task> model, ArrayList<Habit> habits, BlockingQueue<Message> queue) {\r\n        this.toDoView = view;\r\n        this.habitView = habitView;\r\n        this.model = wholeTasks;\r\n        this.queue = queue;\r\n        this.imodel = model;\r\n        this.habitModel = habits;\r\n        valves.add(new AddNewTaskValve());\r\n        valves.add(new AddNewHabitValve());\r\n        //valves.add(new DoNewGameValve());\r\n        //valves.add(new DoHitValve());\r\n\r\n    }\r\n\r\n    public void mainLoop() {\r\n        ValveResponse response = ValveResponse.EXECUTED;\r\n        Message message = null;\r\n        while (response != ValveResponse.FINISH) {\r\n            try {\r\n                message = queue.take(); // <--- take next message from the queue\r\n            } catch (InterruptedException e) {\r\n                e.printStackTrace();\r\n            }\r\n            // Look for a Valve that can process a message\r\n            for (Valve valve : valves) {\r\n                response = valve.execute(message);\r\n                // if successfully processed or game over, leave the loop\r\n                if (response != ValveResponse.MISS) {\r\n                    break;\r\n                }\r\n            }\r\n        }\r\n    }\r\n\r\n    private void updateGameInfo() {\r\n\r\n    }\r\n\r\n    private interface Valve {\r\n        /**\r\n         * Performs certain action in response to message\r\n         */\r\n        public ValveResponse execute(Message message);\r\n    }\r\n\r\n    private class AddNewTaskValve implements Valve{\r\n        //make the class object here\r\n        @Override\r\n        public ValveResponse execute(Message message) {\r\n            if(message.getClass() != AddTaskMessage.class){\r\n                return ValveResponse.MISS;\r\n            }\r\n            if (((AddTaskMessage) message).getImportant() == 1)\r\n            {\r\n                String title = ((AddTaskMessage) message).getTitle();\r\n                Task task = new Task(title);\r\n                imodel.add(task);\r\n                toDoView.changeImp(imodel);\r\n                return ValveResponse.EXECUTED;\r\n            }\r\n            else\r\n                {\r\n                String title = ((AddTaskMessage) message).getTitle();\r\n                Task task = new Task(title);\r\n                model.add(task);\r\n                toDoView.change(model);\r\n                return ValveResponse.EXECUTED;\r\n                }\r\n            //return null;\r\n        }\r\n    }\r\n    private class AddNewHabitValve implements Valve{\r\n        //make the class object here\r\n        @Override\r\n        public ValveResponse execute(Message message) {\r\n            System.out.println(\"ValveRes\");\r\n            if(message.getClass() != AddHabitMessage.class){\r\n                System.out.println(\"Missed from valve\");\r\n                return ValveResponse.MISS;\r\n            }\r\n            String title = ((AddHabitMessage)message).getTitle();\r\n            Habit habit = new Habit(title);\r\n            habitModel.add(habit);\r\n            habitView.change(habitModel);\r\n            return ValveResponse.EXECUTED;\r\n        }\r\n    }\r\n\r\n}\r\n\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/controller/Controller.java	(revision d7d72203dad7b0c0e276333f40f71bca362bfd3f)
++++ src/controller/Controller.java	(date 1607213534689)
+@@ -1,17 +1,19 @@
+ package controller;
+-
+ import model.Model;
+ import model.TaskList;
+ import view.HabitView;
+ import view.View;
+-
+ import java.util.ArrayList;
+ import java.util.LinkedList;
+ import java.util.List;
+ import java.util.concurrent.BlockingQueue;
+ import model.*;
++import java.io.*;
+ 
+-
++/**
++ * Controller acts on both model and view. It controls the data flow into model object and updates the view whenever data changes. It keeps view and model separate.
++ * Here we implement valves, models, and views to acheive this
++ */
+ public class Controller {
+     private BlockingQueue<Message> queue; //queue.take(), queue.put();
+     private View toDoView; // Direct reference to view
+@@ -23,6 +25,15 @@
+ 
+     private List<Valve> valves = new LinkedList<Valve>();
+ 
++    /**
++     *
++     * @param view the view object to be displayed for our program
++     * @param habitView habit instance of the view object for our program
++     * @param wholeTasks list of tasks in the 'regular' section, can be found inside taskList
++     * @param model our model is based on which section of data we are working with, this can be the tasks or ImportantTasks Arrays/Lists of objects
++     * @param habits Habits are tasks that are to be performed for at least 21 days. We track the users tasks to see if they are making a habit with them
++     * @param queue our queue takes valve responses called 'messages' and controls flow of data in the controller. this is done in 'mainLoop'
++     */
+     public Controller(View view, HabitView habitView,ArrayList<Task> wholeTasks, ArrayList<Task> model, ArrayList<Habit> habits, BlockingQueue<Message> queue) {
+         this.toDoView = view;
+         this.habitView = habitView;
+@@ -37,6 +48,9 @@
+ 
+     }
+ 
++    /**
++     * Our main loop here has the job of handling valve repsonses in order to control data flow in the controller.
++     */
+     public void mainLoop() {
+         ValveResponse response = ValveResponse.EXECUTED;
+         Message message = null;
+@@ -57,17 +71,17 @@
+         }
+     }
+ 
+-    private void updateGameInfo() {
+-
+-    }
+-
++    /**
++     * Performs a certain action in response to message, this is a sample valve.
++     */
+     private interface Valve {
+-        /**
+-         * Performs certain action in response to message
+-         */
+         public ValveResponse execute(Message message);
+     }
+ 
++    /**
++     * AddNewTaskValve implements valves, so it's job is to use valves to control data flow of tasks into the model or imodel of our program.
++     * return values are EXECUTION or MISS.
++     */
+     private class AddNewTaskValve implements Valve{
+         //make the class object here
+         @Override
+@@ -84,16 +98,21 @@
+                 return ValveResponse.EXECUTED;
+             }
+             else
+-                {
++            {
+                 String title = ((AddTaskMessage) message).getTitle();
+                 Task task = new Task(title);
+                 model.add(task);
+                 toDoView.change(model);
+                 return ValveResponse.EXECUTED;
+-                }
+-            //return null;
++            }
+         }
+     }
++
++    /**
++     * AddNewHabitValve implements valves, so it's job is to use valves to control data flow of tasks into the habit model of our program.
++     * Here we are also interacting with a class that uses serialiable interface to print into a file and read out of a file.
++     * Again we return value responses of either MISS or EXECUTED.
++     */
+     private class AddNewHabitValve implements Valve{
+         //make the class object here
+         @Override
+@@ -106,10 +125,66 @@
+             String title = ((AddHabitMessage)message).getTitle();
+             Habit habit = new Habit(title);
+             habitModel.add(habit);
++
++
++            File f = new File("obj.txt");
++            try{
++                FileOutputStream fos = new FileOutputStream(f);
++                try{
++                    ObjectOutputStream oos = new ObjectOutputStream(fos);
++                    oos.writeInt(habitModel.size());
++                    for(int i=0; i < habitModel.size();i++){
++                        oos.writeObject(habitModel.get(i));
++                    }
++                    oos.close();
++                    System.out.println("Saved the habit with name: " + habit.getTitle());
++                }catch (IOException error){
++                    System.out.println("IOEception");
++                }
++
++            }catch (FileNotFoundException error){
++                System.out.println("File not found");
++            }
++
++            ArrayList<Habit> inputList = new ArrayList<>();
++            try{
++                FileInputStream fis = new FileInputStream(f);
++                try{
++                    ObjectInputStream ois =  new ObjectInputStream(fis);
++                    try{
++
++                        int habitSize = ois.readInt();
++                        for(int i=0; i < habitSize; i++){
++                            inputList.add((Habit)ois.readObject()) ;
++                        }
++
++
++                    }catch (ClassNotFoundException error){
++                        System.out.println("Input stream: ClassNotFoundException error");
++                    }
++
++                }catch (IOException error){
++                    System.out.println("input stream: IOException error");
++                }
++
++
++            }catch (FileNotFoundException err){
++                System.out.println("input stream: FileNotFound error");
++            }
++
++            System.out.println("\nRead From input stream\n");
++            for(int i=0;i<inputList.size();i++){
++                System.out.println(inputList.get(i).toString());
++            }
++
+             habitView.change(habitModel);
++
++
++
+             return ValveResponse.EXECUTED;
+         }
+     }
+ 
+ }
+ 
++
+Index: src/model/User.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package model;\r\n\r\npublic class User {\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/model/User.java	(revision d7d72203dad7b0c0e276333f40f71bca362bfd3f)
++++ src/model/User.java	(date 1607216818111)
+@@ -1,4 +1,7 @@
+ package model;
+ 
++/**
++ * not being used, came with default package of code given by professor Surmenok.
++ */
+ public class User {
+ }
+Index: src/view/TaskButton.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package view;\r\n\r\nimport javax.swing.*;\r\nimport model.Task;\r\n\r\nimport java.awt.*;\r\nimport java.awt.event.ActionEvent;\r\nimport java.awt.event.ActionListener;\r\n\r\npublic class TaskButton extends JButton {\r\n    private Task task;\r\n\r\n    public TaskButton(Task task){\r\n        this.task = task;\r\n        setText(task.toString());\r\n        addActionListener(new TaskButtonListener());\r\n    }\r\n\r\n    private class TaskButtonListener implements ActionListener{\r\n        @Override\r\n        public void actionPerformed(ActionEvent actionEvent) {\r\n            System.out.println(\"Clicked!\");\r\n\r\n            TaskButton btn = (TaskButton) actionEvent.getSource();\r\n            if(task.isCompleted()){\r\n                task.setCompleted(false);\r\n                btn.setForeground(Color.BLACK);\r\n                btn.setText(task.toString());\r\n            }else{\r\n                task.setCompleted(true);\r\n                btn.setForeground(Color.GRAY);\r\n                btn.setText(task.toString());\r\n            }\r\n        }\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/view/TaskButton.java	(revision d7d72203dad7b0c0e276333f40f71bca362bfd3f)
++++ src/view/TaskButton.java	(date 1607217468468)
+@@ -7,15 +7,28 @@
+ import java.awt.event.ActionEvent;
+ import java.awt.event.ActionListener;
+ 
++/**
++ * creating the code behind TaskButton which is a JButton component
++ */
+ public class TaskButton extends JButton {
+     private Task task;
+ 
++    /**
++     *
++     * @param task creating button with parameter of whatever type of task it is given
++     *             convert task to string name
++     *             add the action listener for button being clicked
++     */
+     public TaskButton(Task task){
+         this.task = task;
+         setText(task.toString());
+         addActionListener(new TaskButtonListener());
+     }
+ 
++    /**
++     * print clicked if taskbutton is clicked
++     * if clicked, have different color then if not clicked. slightly gray.
++     */
+     private class TaskButtonListener implements ActionListener{
+         @Override
+         public void actionPerformed(ActionEvent actionEvent) {
+Index: src/model/Task.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package model;\r\n\r\npublic class Task {\r\n    private String title;\r\n    private int priority;\r\n    private boolean completed;\r\n\r\n    public Task(String title, int priority) {\r\n        this.title = title;\r\n        this.priority = priority;\r\n        this.completed = false;\r\n    }\r\n\r\n    public Task(String title) {\r\n        this.title = title;\r\n        this.priority = 0;\r\n        this.completed = false;\r\n    }\r\n\r\n    public String getTitle() {\r\n        return title;\r\n    }\r\n\r\n    public void setTitle(String title) {\r\n        this.title = title;\r\n    }\r\n\r\n    public int getPriority() {\r\n        return priority;\r\n    }\r\n\r\n    public void setPriority(int priority) {\r\n        this.priority = priority;\r\n    }\r\n\r\n    public boolean isCompleted() {\r\n        return completed;\r\n    }\r\n\r\n    public void setCompleted(boolean completed) {\r\n        this.completed = completed;\r\n    }\r\n\r\n    @Override\r\n    public String toString() {\r\n        return this.title;\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/model/Task.java	(revision d7d72203dad7b0c0e276333f40f71bca362bfd3f)
++++ src/model/Task.java	(date 1607217054688)
+@@ -1,46 +1,63 @@
+ package model;
+-
++/**
++    this class creates the outline for task objects that all of our arraylists consist of.
++    These are the main objects our entire program is working with.
++    Variables like title hold name, priority check for important tasks, completed checks if the task is done
++ */
+ public class Task {
+     private String title;
+     private int priority;
+     private boolean completed;
+ 
++    /**
++     *
++     * @param title name of task
++     * @param priority decide if important task or not
++     */
+     public Task(String title, int priority) {
+         this.title = title;
+         this.priority = priority;
+         this.completed = false;
+     }
+ 
++    /**
++     *
++     * @param title name of task
++     */
+     public Task(String title) {
+         this.title = title;
+         this.priority = 0;
+         this.completed = false;
+     }
+ 
++    /**
++     *
++     * @return the name of the task
++     */
+     public String getTitle() {
+         return title;
+     }
+ 
+-    public void setTitle(String title) {
+-        this.title = title;
+-    }
+-
+-    public int getPriority() {
+-        return priority;
+-    }
+-
+-    public void setPriority(int priority) {
+-        this.priority = priority;
+-    }
+-
++    /**
++     *
++     * @return true of false if task is completed
++     */
+     public boolean isCompleted() {
+         return completed;
+     }
+ 
++    /**
++     *
++     * @param completed setting the task to completed
++     */
+     public void setCompleted(boolean completed) {
+         this.completed = completed;
+     }
+ 
++    /**
++     *
++     * @return name of task to a string value
++     */
+     @Override
+     public String toString() {
+         return this.title;
+Index: src/model/ImportantTaskList.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package model;\r\n\r\nimport java.util.ArrayList;\r\n\r\npublic class ImportantTaskList\r\n{\r\n    private ArrayList<Task> tasksImportant;\r\n    public ImportantTaskList(){\r\n        this.tasksImportant = new ArrayList<>();\r\n    }\r\n\r\n    public void addTask(Task task){\r\n        this.tasksImportant.add(task);\r\n    }\r\n\r\n    public int getSize(){\r\n        return tasksImportant.size();\r\n    }\r\n\r\n    public Task getTask(int index){\r\n        return tasksImportant.get(index);\r\n    }\r\n\r\n    public ArrayList<Task> getTasksImportant(){\r\n        return this.tasksImportant;\r\n    }\r\n\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/model/ImportantTaskList.java	(revision d7d72203dad7b0c0e276333f40f71bca362bfd3f)
++++ src/model/ImportantTaskList.java	(date 1607216747290)
+@@ -2,6 +2,10 @@
+ 
+ import java.util.ArrayList;
+ 
++/**
++ * hold the array list for our important tasks.
++ * have the getter for important tasks as well.
++ */
+ public class ImportantTaskList
+ {
+     private ArrayList<Task> tasksImportant;
+@@ -9,18 +13,32 @@
+         this.tasksImportant = new ArrayList<>();
+     }
+ 
++    /**
++     * not being used by program
++     */
+     public void addTask(Task task){
+         this.tasksImportant.add(task);
+     }
+ 
++    /**
++     *
++     * @return size of tasks important list array list
++     */
+     public int getSize(){
+         return tasksImportant.size();
+     }
+ 
++    /**
++     * this method is not being used.
++     */
+     public Task getTask(int index){
+         return tasksImportant.get(index);
+     }
+ 
++    /**
++     *
++     * @return important tasks from the arraylist
++     */
+     public ArrayList<Task> getTasksImportant(){
+         return this.tasksImportant;
+     }
+Index: src/controller/HabitController.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package controller;\r\n\r\nimport model.Model;\r\nimport model.TaskList;\r\nimport view.HabitView;\r\nimport view.View;\r\n\r\nimport java.util.ArrayList;\r\nimport java.util.LinkedList;\r\nimport java.util.List;\r\nimport java.util.concurrent.BlockingQueue;\r\nimport model.*;\r\n\r\npublic class HabitController {\r\n    private BlockingQueue<Message> queue; //queue.take(), queue.put();\r\n    private HabitView habitView; // Direct reference to view\r\n    private ArrayList<Habit> model; // Direct reference to model\r\n    private List<Valve> valves = new LinkedList<Valve>();\r\n\r\n\r\n    public HabitController(HabitView view, ArrayList<Habit> model, BlockingQueue<Message> queue) {\r\n        this.habitView = view;\r\n        this.model = model;\r\n        this.queue = queue;\r\n        valves.add(new AddNewHabitValve());\r\n\r\n    }\r\n\r\n    public void mainLoop() {\r\n        ValveResponse response = ValveResponse.EXECUTED;\r\n        Message message = null;\r\n        while (response != ValveResponse.FINISH) {\r\n            try {\r\n                System.out.println(\"in main\");\r\n                message = queue.take(); // <--- take next message from the queue\r\n            } catch (InterruptedException e) {\r\n                e.printStackTrace();\r\n            }\r\n            // Look for a Valve that can process a message\r\n            for (Valve valve : valves) {\r\n                response = valve.execute(message);\r\n                // if successfully processed or game over, leave the loop\r\n                if (response != ValveResponse.MISS) {\r\n                    break;\r\n                }\r\n            }\r\n        }\r\n    }\r\n\r\n\r\n    private interface Valve {\r\n        /**\r\n         * Performs certain action in response to message\r\n         */\r\n        public ValveResponse execute(Message message);\r\n    }\r\n\r\n    private class AddNewHabitValve implements Valve{\r\n        //make the class object here\r\n        @Override\r\n        public ValveResponse execute(Message message) {\r\n            System.out.println(\"ValveRes\");\r\n            if(message.getClass() != AddHabitMessage.class){\r\n                System.out.println(\"Missed from valve\");\r\n                return ValveResponse.MISS;\r\n            }\r\n            String title = ((AddHabitMessage)message).getTitle();\r\n            Habit habit = new Habit(title);\r\n            model.add(habit);\r\n            habitView.change(model);\r\n            return ValveResponse.EXECUTED;\r\n        }\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/controller/HabitController.java	(revision d7d72203dad7b0c0e276333f40f71bca362bfd3f)
++++ src/controller/HabitController.java	(date 1607216293133)
+@@ -11,13 +11,22 @@
+ import java.util.concurrent.BlockingQueue;
+ import model.*;
+ 
++/**
++ * This controller was being used for trial/error, but is not being used anymore. So really you can ignore this as we aren't using it anymore.
++ * The job of this is to have a seperate controller for handlind habits
++ */
+ public class HabitController {
+     private BlockingQueue<Message> queue; //queue.take(), queue.put();
+     private HabitView habitView; // Direct reference to view
+     private ArrayList<Habit> model; // Direct reference to model
+     private List<Valve> valves = new LinkedList<Valve>();
+ 
+-
++    /**
++     *
++     * @param view create a view for habits
++     * @param model create a model for habits
++     * @param queue queue for the message queue
++     */
+     public HabitController(HabitView view, ArrayList<Habit> model, BlockingQueue<Message> queue) {
+         this.habitView = view;
+         this.model = model;
+@@ -26,6 +35,9 @@
+ 
+     }
+ 
++    /**
++     * main loop for the valves and message queue
++     */
+     public void mainLoop() {
+         ValveResponse response = ValveResponse.EXECUTED;
+         Message message = null;
+@@ -47,7 +59,9 @@
+         }
+     }
+ 
+-
++    /**
++     * valve for message queue execution
++     */
+     private interface Valve {
+         /**
+          * Performs certain action in response to message
+@@ -55,6 +69,9 @@
+         public ValveResponse execute(Message message);
+     }
+ 
++    /**
++     * valve for adding new habit
++     */
+     private class AddNewHabitValve implements Valve{
+         //make the class object here
+         @Override
+Index: src/model/Habit.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package model;\r\n\r\nimport java.util.ArrayList;\r\n\r\npublic class Habit {\r\n    private String title;\r\n    private ArrayList<Integer> daysOfCompleted;\r\n\r\n    public Habit(String title) {\r\n        this.title = title;\r\n        daysOfCompleted = new ArrayList<>();\r\n    }\r\n\r\n    public String getTitle() {\r\n        return title;\r\n    }\r\n\r\n    public ArrayList<Integer> getDaysOfCompleted() {\r\n        return daysOfCompleted;\r\n    }\r\n\r\n    public void setTitle(String title) {\r\n        this.title = title;\r\n    }\r\n\r\n    public void setDaysOfCompleted(ArrayList<Integer> daysOfCompleted) {\r\n        this.daysOfCompleted = daysOfCompleted;\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/model/Habit.java	(revision d7d72203dad7b0c0e276333f40f71bca362bfd3f)
++++ src/model/Habit.java	(date 1607213823472)
+@@ -1,28 +1,57 @@
+ package model;
+-
++import java.io.Serializable;
+ import java.util.ArrayList;
+ 
+-public class Habit {
++/**
++ * Creating a habit class with:
++ * Creating a habit with name of title and arrayList of days that the habit was completed on.
++ */
++public class Habit implements Serializable {
+     private String title;
+     private ArrayList<Integer> daysOfCompleted;
+-
+     public Habit(String title) {
+         this.title = title;
+         daysOfCompleted = new ArrayList<>();
+     }
+ 
++    /**
++     * overriding the toString java default method to return the size of daysOfCompleted Array.
++     * @return variable that holds title and size of habit
++     */
++    @Override
++    public String toString() {
++        String res = title + ": " + daysOfCompleted.size();
++        return res;
++    }
++
++    /**
++     *
++     * @return name of habit
++     */
+     public String getTitle() {
+         return title;
+     }
+ 
++    /**
++     *
++     * @return arrayList of days that the habit was completed on
++     */
+     public ArrayList<Integer> getDaysOfCompleted() {
+         return daysOfCompleted;
+     }
+ 
++    /**
++     *
++     * @param title name of habit
++     */
+     public void setTitle(String title) {
+         this.title = title;
+     }
+ 
++    /**
++     *
++     * @param daysOfCompleted set this objects instance's daysOfCompleted to its own value
++     */
+     public void setDaysOfCompleted(ArrayList<Integer> daysOfCompleted) {
+         this.daysOfCompleted = daysOfCompleted;
+     }
+Index: src/controller/AddHabitMessage.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package controller;\r\n\r\npublic class AddHabitMessage implements Message {\r\n    private String title;\r\n\r\n    public AddHabitMessage(String title) {\r\n        this.title = title;\r\n    }\r\n\r\n    public void setTitle(String title) {\r\n        this.title = title;\r\n    }\r\n\r\n    public String getTitle() {\r\n        return title;\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/controller/AddHabitMessage.java	(revision d7d72203dad7b0c0e276333f40f71bca362bfd3f)
++++ src/controller/AddHabitMessage.java	(date 1607215033347)
+@@ -1,16 +1,23 @@
+ package controller;
+ 
++/**
++ * this class just holds data for the queue/message to deliver to the controller in order to add a habit message
++ */
+ public class AddHabitMessage implements Message {
+     private String title;
+ 
++    /**
++     *
++     * @param title return this value
++     */
+     public AddHabitMessage(String title) {
+         this.title = title;
+     }
+ 
+-    public void setTitle(String title) {
+-        this.title = title;
+-    }
+-
++    /**
++     * getter for title
++     * @return title variable
++     */
+     public String getTitle() {
+         return title;
+     }
+Index: src/controller/Message.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package controller;\r\n\r\nimport java.io.Serializable;\r\n\r\n/**\r\n * Represents message (event) sent from View to Model\r\n */\r\npublic interface Message extends Serializable {\r\n\r\n}\r\n\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/controller/Message.java	(revision d7d72203dad7b0c0e276333f40f71bca362bfd3f)
++++ src/controller/Message.java	(date 1607216323220)
+@@ -3,7 +3,7 @@
+ import java.io.Serializable;
+ 
+ /**
+- * Represents message (event) sent from View to Model
++ * Represents message (event) sent from View to Model, not being used by our program. you can ignore.
+  */
+ public interface Message extends Serializable {
+ 
+Index: src/controller/HitMessage.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package controller;\r\n\r\npublic class HitMessage implements Message {\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/controller/HitMessage.java	(revision d7d72203dad7b0c0e276333f40f71bca362bfd3f)
++++ src/controller/HitMessage.java	(date 1607216592754)
+@@ -1,4 +1,8 @@
+ package controller;
+ 
++/**
++ * not being used by our program, please ignore.
++ * came with default code package from professor Surmenok.
++ */
+ public class HitMessage implements Message {
+ }
+Index: src/controller/NewGameMessage.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package controller;\r\n\r\npublic class NewGameMessage implements Message {\r\n}\r\n\r\n\r\nclass RightClickMessage implements Message {\r\n    int x;\r\n    int y;\r\n\r\n    RightClickMessage(int x, int y) {\r\n\r\n    }\r\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/controller/NewGameMessage.java	(revision d7d72203dad7b0c0e276333f40f71bca362bfd3f)
++++ src/controller/NewGameMessage.java	(date 1607216410071)
+@@ -1,5 +1,8 @@
+ package controller;
+ 
++/**
++ * Not being used in our program, came with the default code provided by professor Surmenok.
++ */
+ public class NewGameMessage implements Message {
+ }
+ 
+Index: src/model/Model.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package model;\r\n\r\npublic class Model {\r\n    private boolean roundStarted;\r\n    private boolean roundOver;\r\n\r\n    public boolean isRoundStarted() {\r\n        return roundStarted;\r\n    }\r\n\r\n    public boolean isRoundOver() {\r\n        return roundOver;\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/model/Model.java	(revision d7d72203dad7b0c0e276333f40f71bca362bfd3f)
++++ src/model/Model.java	(date 1607216818119)
+@@ -1,5 +1,9 @@
+ package model;
+ 
++/**
++ * Not being used for our program.
++ * Came with default package provided by professor.
++ */
+ public class Model {
+     private boolean roundStarted;
+     private boolean roundOver;
+Index: src/controller/ValveResponse.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package controller;\r\n\r\npublic enum ValveResponse {\r\n    MISS,\r\n    EXECUTED,\r\n    FINISH\r\n}\r\n\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/controller/ValveResponse.java	(revision d7d72203dad7b0c0e276333f40f71bca362bfd3f)
++++ src/controller/ValveResponse.java	(date 1607216487573)
+@@ -1,5 +1,8 @@
+ package controller;
+ 
++/**
++ * enumerators for valve response states.
++ */
+ public enum ValveResponse {
+     MISS,
+     EXECUTED,
+Index: src/model/TaskList.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package model;\r\nimport java.util.ArrayList;\r\nimport view.*;\r\n\r\npublic class TaskList {\r\n    private ArrayList<Task> tasks;\r\n\r\n    public TaskList(){\r\n        this.tasks = new ArrayList<>();\r\n    }\r\n\r\n    public void addTask(Task task){\r\n        this.tasks.add(task);\r\n    }\r\n\r\n    public int getSize(){\r\n        return tasks.size();\r\n    }\r\n\r\n    public Task getTask(int index){\r\n        return tasks.get(index);\r\n    }\r\n\r\n    public ArrayList<Task> getWholeTasks(){\r\n        return this.tasks;\r\n    }\r\n\r\n\r\n\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/model/TaskList.java	(revision d7d72203dad7b0c0e276333f40f71bca362bfd3f)
++++ src/model/TaskList.java	(date 1607216888057)
+@@ -1,26 +1,22 @@
+ package model;
+ import java.util.ArrayList;
+-import view.*;
+ 
++/**
++ * Creates the arraylist for our normal/regular tasks
++ */
+ public class TaskList {
+     private ArrayList<Task> tasks;
+-
++/**
++ * initialize the arraylist for our normal tasks
++ */
+     public TaskList(){
+         this.tasks = new ArrayList<>();
+     }
+ 
+-    public void addTask(Task task){
+-        this.tasks.add(task);
+-    }
+-
+-    public int getSize(){
+-        return tasks.size();
+-    }
+-
+-    public Task getTask(int index){
+-        return tasks.get(index);
+-    }
+-
++    /**
++     *
++     * @return the tasks in our arraylist of normal tasks.
++     */
+     public ArrayList<Task> getWholeTasks(){
+         return this.tasks;
+     }
+Index: src/controller/AddTaskMessage.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package controller;\r\npublic class AddTaskMessage implements Message {\r\n    private String title;\r\n    private int priorityTask = 0;\r\n\r\n    public AddTaskMessage(String title) {\r\n        this.title = title;\r\n    }\r\n\r\n    public AddTaskMessage(String title, int priorityTask)\r\n    {\r\n        this.title = title;\r\n        this.priorityTask = priorityTask;\r\n    }\r\n\r\n    public String getTitle() {\r\n        return title;\r\n    }\r\n\r\n    public int getImportant() {return priorityTask;}\r\n}\r\n\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/controller/AddTaskMessage.java	(revision d7d72203dad7b0c0e276333f40f71bca362bfd3f)
++++ src/controller/AddTaskMessage.java	(date 1607215255323)
+@@ -1,22 +1,39 @@
+ package controller;
++
++/**
++ * this class just holds data for the queue/message to deliver to the controller in order to add a task
++ */
+ public class AddTaskMessage implements Message {
+     private String title;
+     private int priorityTask = 0;
+ 
++    /**
++     * @param title the title of task that is added
++     */
+     public AddTaskMessage(String title) {
+         this.title = title;
+     }
+-
++    /**
++     * @param title the title of task that is added
++     * @param priorityTask is a variable to decide whether the task is important or not
++     */
+     public AddTaskMessage(String title, int priorityTask)
+     {
+         this.title = title;
+         this.priorityTask = priorityTask;
+     }
+ 
++    /**
++     *
++     * @return using this method to turn the title into a string to pass into another method.
++     */
+     public String getTitle() {
+         return title;
+     }
+ 
++    /**
++     *
++     * @return return 1 if the task is important
++     */
+     public int getImportant() {return priorityTask;}
+ }
+-
+Index: src/controller/GameInfo.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package controller;\r\n\r\npublic class GameInfo {\r\n    // the state of the Game/Application\r\n    // information that is needed to repaint the View\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/controller/GameInfo.java	(revision d7d72203dad7b0c0e276333f40f71bca362bfd3f)
++++ src/controller/GameInfo.java	(date 1607215408429)
+@@ -1,5 +1,4 @@
+ package controller;
+-
+ public class GameInfo {
+     // the state of the Game/Application
+     // information that is needed to repaint the View
+diff --git .idea/shelf/Uncommitted_changes_before_Update_at_12_3_2020_9_29_AM__Default_Changelist_.xml .idea/shelf/Uncommitted_changes_before_Update_at_12_3_2020_9_29_AM__Default_Changelist_.xml
+diff --git .idea/shelf/Uncommitted_changes_before_Update_at_12_4_2020_4_15_PM__Default_Changelist_.xml .idea/shelf/Uncommitted_changes_before_Update_at_12_4_2020_4_15_PM__Default_Changelist_.xml

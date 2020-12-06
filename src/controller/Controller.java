@@ -10,7 +10,10 @@ import java.util.concurrent.BlockingQueue;
 import model.*;
 import java.io.*;
 
-
+/**
+ * Controller acts on both model and view. It controls the data flow into model object and updates the view whenever data changes. It keeps view and model separate.
+ * Here we implement valves, models, and views to acheive this
+ */
 public class Controller {
     private BlockingQueue<Message> queue; //queue.take(), queue.put();
     private View toDoView; // Direct reference to view
@@ -21,7 +24,15 @@ public class Controller {
 
 
     private List<Valve> valves = new LinkedList<Valve>();
-
+    /**
+     *
+     * @param view the view object to be displayed for our program
+     * @param habitView habit instance of the view object for our program
+     * @param wholeTasks list of tasks in the 'regular' section, can be found inside taskList
+     * @param model our model is based on which section of data we are working with, this can be the tasks or ImportantTasks Arrays/Lists of objects
+     * @param habits Habits are tasks that are to be performed for at least 21 days. We track the users tasks to see if they are making a habit with them
+     * @param queue our queue takes valve responses called 'messages' and controls flow of data in the controller. this is done in 'mainLoop'
+     */
     public Controller(View view, HabitView habitView,ArrayList<Task> wholeTasks, ArrayList<Task> model, ArrayList<Habit> habits, BlockingQueue<Message> queue) {
         this.toDoView = view;
         this.habitView = habitView;
@@ -35,7 +46,9 @@ public class Controller {
         //valves.add(new DoHitValve());
 
     }
-
+    /**
+     * Our main loop here has the job of handling valve repsonses in order to control data flow in the controller.
+     */
     public void mainLoop() {
         ValveResponse response = ValveResponse.EXECUTED;
         Message message = null;
@@ -55,14 +68,16 @@ public class Controller {
             }
         }
     }
-
+    /**
+     * Performs a certain action in response to message, this is a sample valve.
+     */
     private interface Valve {
-        /**
-         * Performs certain action in response to message
-         */
         public ValveResponse execute(Message message);
     }
-
+    /**
+     * AddNewTaskValve implements valves, so it's job is to use valves to control data flow of tasks into the model or imodel of our program.
+     * return values are EXECUTION or MISS.
+     */
     private class AddNewTaskValve implements Valve{
         //make the class object here
         @Override
@@ -79,16 +94,21 @@ public class Controller {
                 return ValveResponse.EXECUTED;
             }
             else
-                {
+            {
                 String title = ((AddTaskMessage) message).getTitle();
                 Task task = new Task(title);
                 model.add(task);
                 toDoView.change(model);
                 return ValveResponse.EXECUTED;
-                }
+            }
             //return null;
         }
     }
+    /**
+     * AddNewHabitValve implements valves, so it's job is to use valves to control data flow of tasks into the habit model of our program.
+     * Here we are also interacting with a class that uses serialiable interface to print into a file and read out of a file.
+     * Again we return value responses of either MISS or EXECUTED.
+     */
     private class AddNewHabitValve implements Valve{
         //make the class object here
         @Override
@@ -104,7 +124,7 @@ public class Controller {
 
             File f = new File("obj.txt");
             try{
-               f.createNewFile();
+                f.createNewFile();
             }catch (IOException err){
                 System.out.println("file already exists");
                 System.out.println("createNewFile: IOException\n");
@@ -170,4 +190,5 @@ public class Controller {
     }
 
 }
+
 

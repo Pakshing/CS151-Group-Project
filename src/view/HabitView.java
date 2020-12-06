@@ -13,7 +13,9 @@ import java.util.ArrayList;
 import java.util.concurrent.BlockingQueue;
 import model.*;
 
-
+/**
+ * JFrame for Habit view.
+ */
 public class HabitView extends JFrame {
     private BlockingQueue<Message> queue;
     private ArrayList<Habit> habits;
@@ -21,13 +23,23 @@ public class HabitView extends JFrame {
     private GridBagConstraints gbc = new GridBagConstraints();
     private JPanel mainDisplayPanel;
 
-
+    /**
+     * Call the constructor method
+     * @param queue BlockingQueue
+     * @param habits ArrayList of habit objects
+     * @return
+     */
     public static HabitView init(BlockingQueue<Message> queue, ArrayList<Habit> habits) {
         // Create object of type view
         return new HabitView(queue,habits);
     }
 
 
+    /**
+     * View method to paint on the JFrame at the beginning
+     * @param queue BlockingQueue
+     * @param habits ArrayList of habit objects
+     */
     private HabitView(BlockingQueue<Message> queue, ArrayList<Habit> habits) {
         this.queue = queue;
         this.habits = habits;
@@ -121,6 +133,10 @@ public class HabitView extends JFrame {
     }
 
 
+    /**
+     * change method for updating the habit listing panel of add button is clicked
+     * @param habits list of habit objects
+     */
     public void change(ArrayList<Habit> habits) {
         // TODO: do all the updates and repaint
         //System.out.println("In change");
@@ -138,6 +154,10 @@ public class HabitView extends JFrame {
         this.repaint();
     }
 
+    /**
+     * Update the mainDisplayPanel by clicking a Habit button
+     * @param habit Habit object to be selected from
+     */
     public void changeMainDisplay(Habit habit){
         System.out.println("change main display ");
         mainDisplayPanel.removeAll();
@@ -178,6 +198,9 @@ public class HabitView extends JFrame {
 
     }
 
+    /**
+     * Action Listener class when a Habit button is clicked
+     */
     private class habitButtonListener implements ActionListener {
         private Habit habit;
 
@@ -188,10 +211,12 @@ public class HabitView extends JFrame {
         @Override
         public void actionPerformed(ActionEvent actionEvent) {
             changeMainDisplay(habit);
-            System.out.println("Clicked! habitBtn");
         }
     }
 
+    /**
+     * Action listener class for updating the view on main display (day buttons) & update the model
+     */
     private class dayButtonListener implements ActionListener {
         private Habit habit;
         private int habitPosition;
@@ -215,6 +240,9 @@ public class HabitView extends JFrame {
         }
     }
 
+    /**
+     * dispose the JFrame
+     */
     public void dispose() {
         // TODO: clear all the resources
         // for example, gameFrame.dispose();

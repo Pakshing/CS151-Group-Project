@@ -1,0 +1,26 @@
+Index: src/YourProgramName.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>\r\nimport model.*;\r\nimport controller.Controller;\r\nimport controller.Message;\r\nimport model.ImportantTaskList;\r\nimport model.Model;\r\nimport model.TaskList;\r\nimport view.HabitView;\r\nimport java.util.*;\r\nimport controller.HabitController;\r\nimport model.ImportantTaskList;\r\nimport view.View;\r\n\r\nimport java.util.concurrent.BlockingQueue;\r\nimport java.util.concurrent.LinkedBlockingQueue;\r\n\r\npublic class YourProgramName {\r\n    private static BlockingQueue<Message> queue = new LinkedBlockingQueue<>();\r\n    private static View view;\r\n    private static TaskList model;\r\n    public static ImportantTaskList modelImportant; //create new model for important values\r\n    private static ArrayList<Habit> habitsModel;\r\n    private static HabitView habitView;\r\n\r\n    public static void main(String[] args) {\r\n        model = new TaskList();\r\n        habitsModel = new ArrayList<Habit>();\r\n        modelImportant = new ImportantTaskList();\r\n        view = View.init(queue,model.getWholeTasks(), modelImportant.getTasksImportant());\r\n        habitView = HabitView.init(queue, habitsModel);\r\n        Controller controller = new Controller(view, model.getWholeTasks(), modelImportant.getTasksImportant(), queue);\r\n        HabitController habitController = new HabitController(habitView,habitsModel, queue);\r\n        controller.mainLoop();\r\n        habitController.mainLoop();\r\n        view.dispose();\r\n        habitView.dispose();\r\n        queue.clear();\r\n    }\r\n\r\n}\r\n\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/YourProgramName.java	(revision 82e535b7cfecfa80ba8931bcfcef82487fa00047)
++++ src/YourProgramName.java	(date 1607129187746)
+@@ -26,12 +26,16 @@
+         model = new TaskList();
+         habitsModel = new ArrayList<Habit>();
+         modelImportant = new ImportantTaskList();
++
+         view = View.init(queue,model.getWholeTasks(), modelImportant.getTasksImportant());
+         habitView = HabitView.init(queue, habitsModel);
++
+         Controller controller = new Controller(view, model.getWholeTasks(), modelImportant.getTasksImportant(), queue);
+         HabitController habitController = new HabitController(habitView,habitsModel, queue);
++
+         controller.mainLoop();
+         habitController.mainLoop();
++
+         view.dispose();
+         habitView.dispose();
+         queue.clear();

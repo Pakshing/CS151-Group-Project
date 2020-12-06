@@ -12,7 +12,11 @@ import view.View;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
-public class YourProgramName {
+/**
+ * The starting point of this program
+ * Initialize all the models and BlockingQueue, Views
+ */
+public class HabitTracker {
     private static BlockingQueue<Message> queue = new LinkedBlockingQueue<>();
     private static View view;
     private static ArrayList<Task> modelTask =  new ArrayList<>();
@@ -20,6 +24,10 @@ public class YourProgramName {
     private static ArrayList<Habit> habitsModel;
     private static HabitView habitView;
 
+    /**
+     * main method for starting the program
+     * @param args
+     */
     public static void main(String[] args) {
 
         habitsModel = readDataFromTxt();
@@ -27,7 +35,10 @@ public class YourProgramName {
         habitView = HabitView.init(queue, habitsModel);
 
         Controller controller = new Controller(view,habitView, modelTask, modelImportant,habitsModel, queue);
+
+
         controller.mainLoop();
+
 
         view.dispose();
         habitView.dispose();
@@ -36,6 +47,10 @@ public class YourProgramName {
 
     }
 
+    /**
+     * Read data from a tile file or create one if not exits
+     * @return list of habit objects
+     */
     public static ArrayList<Habit> readDataFromTxt(){
         File f = new File("obj.txt");
         try{
