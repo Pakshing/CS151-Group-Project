@@ -17,12 +17,10 @@ import model.*;
 public class HabitView extends JFrame {
     private BlockingQueue<Message> queue;
     private ArrayList<Habit> habits;
-    private JPanel TaskPanel;
     private JPanel habitListPanel;
     private GridBagConstraints gbc = new GridBagConstraints();
     private JPanel mainDisplayPanel;
-    private HabitView habitView;
-    //private JPanel panelTwo;
+
 
     public static HabitView init(BlockingQueue<Message> queue, ArrayList<Habit> habits) {
         // Create object of type view
@@ -33,91 +31,33 @@ public class HabitView extends JFrame {
     private HabitView(BlockingQueue<Message> queue, ArrayList<Habit> habits) {
         this.queue = queue;
         this.habits = habits;
+
         // TODO:
         // you should initalize JFrame and show it,
         // JFrame should be able to add Messages to queue
         // JFrame can be in a separate class or created JFrame with all the elements in this class
         // or you can make View a subclass of JFrame by extending it
-
-
-        /*
-        Habit habit1 = new Habit("Exercising");
-        ArrayList<Integer> habit1DaysOfComplete = new ArrayList<>();
-        habit1DaysOfComplete.add(1);
-        habit1DaysOfComplete.add(2);
-        habit1DaysOfComplete.add(3);
-        habit1DaysOfComplete.add(9);
-        habit1DaysOfComplete.add(10);
-        habit1DaysOfComplete.add(21);
-        habit1.setDaysOfCompleted(habit1DaysOfComplete);
-
-        Habit habit2 = new Habit("Working Out");
-        ArrayList<Integer> habit2DaysOfComplete = new ArrayList<>();
-        habit2DaysOfComplete.add(1);
-        habit2DaysOfComplete.add(2);
-        habit2DaysOfComplete.add(3);
-        habit2DaysOfComplete.add(9);
-        habit2DaysOfComplete.add(10);
-        habit2DaysOfComplete.add(21);
-        habit2.setDaysOfCompleted(habit2DaysOfComplete);
-
-        Habit habit3 = new Habit("Running");
-        ArrayList<Integer> habit3DaysOfComplete = new ArrayList<>();
-        habit3DaysOfComplete.add(1);
-        habit3DaysOfComplete.add(2);
-        habit3DaysOfComplete.add(3);
-        habit3DaysOfComplete.add(9);
-        habit3DaysOfComplete.add(10);
-        habit3DaysOfComplete.add(21);
-        habit3.setDaysOfCompleted(habit3DaysOfComplete);
-
-        habits.add(habit1);
-        habits.add(habit2);
-        habits.add(habit3);
-        */
-
-
-
         this.setPreferredSize(new Dimension(600,600));
         this.setLayout(new BorderLayout());
 
 
-        //this.add(new JLabel("Habit",SwingConstants.CENTER),BorderLayout.NORTH);
+        gbc.insets = new Insets(2,2,2,2);
 
-        //main display panel in the middle.
+
         mainDisplayPanel = new JPanel();
         mainDisplayPanel.setLayout(new GridBagLayout());
         mainDisplayPanel.setBackground(new Color(242, 232, 255));
         mainDisplayPanel.setSize(400,400);
         gbc.insets = new Insets(2,2,2,2);
-        /*
-        JLabel titleLabel = new JLabel("Exercising");
 
-        gbc.gridx = 3;
-        gbc.gridy = 0;
-        //gbc.gridwidth =5;
-        mainDisplayPanel.add(titleLabel,gbc);
-        int indexY = 1;
-        int indexX = 0;
-        for(int i=0; i < 21;i++){
-            if(i % 7 ==0){
-                indexY +=1;
-                indexX =0;
-            }
-            gbc.gridx = indexX;
-            indexX++;
-            gbc.gridy = indexY;
-            JButton btn = new JButton(Integer.toString(i+1));
-            mainDisplayPanel.add(btn,gbc);
-        }
 
-         */
 
 
         habitListPanel = new JPanel();
         habitListPanel.setLayout(new FlowLayout());
         for(int i =0; i < habits.size(); i++){
-            JButton btn = new JButton(habits.get(i).getTitle());
+            HabitButton btn = new HabitButton(habits.get(i));
+            btn.addActionListener(new habitButtonListener(habits.get(i)));
             habitListPanel.add(btn);
         }
 
@@ -166,9 +106,7 @@ public class HabitView extends JFrame {
         inputPanel.add(textField);
         inputPanel.add(addButton);
         inputPanel.add(saveButton);
-        //habitListPanel.add()
 
-        //mainDisplayPanel.add(titleLabel,gbc);
 
 
         JPanel bottomPanel = new JPanel(new GridLayout(2,1));
@@ -201,10 +139,7 @@ public class HabitView extends JFrame {
     }
 
     public void changeMainDisplay(Habit habit){
-        //mainDisplayPanel.setLayout(new GridBagLayout());
-        //mainDisplayPanel.setBackground(new Color(242, 232, 255));
-        //mainDisplayPanel.setSize(400,400);
-
+        System.out.println("change main display ");
         mainDisplayPanel.removeAll();
         gbc.insets = new Insets(2,2,2,2);
 
@@ -252,12 +187,8 @@ public class HabitView extends JFrame {
 
         @Override
         public void actionPerformed(ActionEvent actionEvent) {
-            //HabitButton btn = (HabitButton) actionEvent.getSource();
             changeMainDisplay(habit);
             System.out.println("Clicked! habitBtn");
-            //to do something
-            //view.changeMainDisplay(habit);
-
         }
     }
 
@@ -280,8 +211,6 @@ public class HabitView extends JFrame {
             habits.get(this.habitPosition).setDaysOfCompleted(daysOfCompleted);
             changeMainDisplay(habits.get(this.habitPosition));
             System.out.println("Clicked! daybtn");
-            //to do something
-            //view.changeMainDisplay(habit);
 
         }
     }
@@ -289,6 +218,7 @@ public class HabitView extends JFrame {
     public void dispose() {
         // TODO: clear all the resources
         // for example, gameFrame.dispose();
+        this.dispose();
     }
 
 

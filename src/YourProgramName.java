@@ -2,13 +2,11 @@
 import model.*;
 import controller.Controller;
 import controller.Message;
-import model.ImportantTaskList;
-import model.Model;
-import model.TaskList;
 import view.HabitView;
+
+import java.io.*;
 import java.util.*;
-import controller.HabitController;
-import model.ImportantTaskList;
+
 import view.View;
 
 import java.util.concurrent.BlockingQueue;
@@ -16,32 +14,69 @@ import java.util.concurrent.LinkedBlockingQueue;
 
 public class YourProgramName {
     private static BlockingQueue<Message> queue = new LinkedBlockingQueue<>();
-    //private static BlockingQueue<Message> queue2 = new LinkedBlockingQueue<>();
     private static View view;
-    private static TaskList model;
-    public static ImportantTaskList modelImportant; //create new model for important values
+    private static ArrayList<Task> modelTask =  new ArrayList<>();
+    public static ArrayList<Task> modelImportant = new ArrayList<>(); //create new model for important values
     private static ArrayList<Habit> habitsModel;
     private static HabitView habitView;
 
     public static void main(String[] args) {
-        model = new TaskList();
-        habitsModel = new ArrayList<Habit>();
-        modelImportant = new ImportantTaskList();
 
-        view = View.init(queue,model.getWholeTasks(), modelImportant.getTasksImportant());
+        habitsModel = readDataFromTxt();
+        view = View.init(queue,modelTask, modelImportant);
         habitView = HabitView.init(queue, habitsModel);
 
-        Controller controller = new Controller(view,habitView, model.getWholeTasks(), modelImportant.getTasksImportant(),habitsModel, queue);
-        //HabitController habitController = new HabitController(habitView,habitsModel, queue);
-
+        Controller controller = new Controller(view,habitView, modelTask, modelImportant,habitsModel, queue);
         controller.mainLoop();
-        //habitController.mainLoop();
 
         view.dispose();
         habitView.dispose();
 
         queue.clear();
 
+    }
+
+    public static ArrayList<Habit> readDataFromTxt(){
+        File f = new File("obj.txt");
+        try{
+            f.createNewFile();
+        }catch (IOException err){
+            System.out.println("file already exists");
+            System.out.println("createNewFile: IOException\n");
+        }
+
+        ArrayList<Habit> inputList = new ArrayList<>();
+        try{
+            FileInputStream fis = new FileInputStream(f);
+            try{
+                ObjectInputStream ois =  new ObjectInputStream(fis);
+                try{
+
+                    int habitSize = ois.readInt();
+                    for(int i=0; i < habitSize; i++){
+                        inputList.add((Habit)ois.readObject()) ;
+                    }
+
+
+                }catch (ClassNotFoundException error){
+                    System.out.println("Input stream: ClassNotFoundException error");
+                }
+
+            }catch (IOException error){
+                System.out.println("input stream: IOException error");
+            }
+
+
+        }catch (FileNotFoundException err){
+            System.out.println("input stream: FileNotFound error");
+        }
+
+        System.out.println("\nRead From input stream\n");
+        for(int i=0;i<inputList.size();i++){
+            System.out.println(inputList.get(i).toString());
+        }
+
+        return inputList;
     }
 
 }

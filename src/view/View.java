@@ -1,9 +1,7 @@
 package view;
 
 import controller.AddTaskMessage;
-import controller.HitMessage;
 import controller.Message;
-import controller.NewGameMessage;
 
 import javax.swing.*;
 import java.awt.*;
@@ -12,14 +10,12 @@ import java.util.concurrent.BlockingQueue;
 import model.*;
 
 public class View extends JFrame {
-    TaskView taskView;
-    private JFrame gameFrame;
     private BlockingQueue<Message> queue;
     private ArrayList<Task> tasks;
     private ArrayList<Task> tasksImportant;
     private JPanel TaskPanel;
     private JPanel ImportantTasksPanel;
-   // private JList<Task> ImportantTasksPanel;
+
 
 
     public static View init(BlockingQueue<Message> queue, ArrayList<Task> tasks, ArrayList<Task> tasksImportant) {
@@ -82,24 +78,22 @@ public class View extends JFrame {
 
 
 
-        //for regular tasks
         addToRegularButton.addActionListener(event -> {
             try {
                 String title = addNewTaskField.getText();
                 addNewTaskField.setText("");
-                this.queue.put(new AddTaskMessage(title)); // <--- adding Add New Task message to the queue
+                this.queue.put(new AddTaskMessage(title));
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
         });
 
-        //for Important tasks
 
         addToImportantButton.addActionListener(event -> {
             try {
                 String title = addNewTaskField.getText();
                 addNewTaskField.setText("");
-                this.queue.put(new AddTaskMessage(title, 1)); // <--- adding to queue
+                this.queue.put(new AddTaskMessage(title, 1));
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -137,13 +131,6 @@ public class View extends JFrame {
             String title = ((Task)tasks.get(i)).getTitle();
             ImportantTasksPanel.add(new TaskButton(new Task(title)));
         }
-        //loop to print the important tasks
-        /*
-        for(int i=0; i < tasksImportant.size(); i++){
-            String title = ((Task)tasks.get(i)).getTitle();
-            ImportantTasksPanel.add(new JLabel(title));
-        }
-        */
         this.revalidate();
         this.repaint();
     }
@@ -152,6 +139,6 @@ public class View extends JFrame {
 
     public void dispose() {
         // TODO: clear all the resources
-        // for example, gameFrame.dispose();
+        this.dispose();
     }
 }

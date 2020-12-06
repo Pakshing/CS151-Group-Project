@@ -1,9 +1,6 @@
 package controller;
 
-import model.Model;
-import model.TaskList;
 import view.HabitView;
-import view.View;
 
 import java.util.ArrayList;
 import java.util.LinkedList;

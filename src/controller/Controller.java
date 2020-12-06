@@ -1,7 +1,5 @@
 package controller;
 
-import model.Model;
-import model.TaskList;
 import view.HabitView;
 import view.View;
 
@@ -104,10 +102,18 @@ public class Controller {
             Habit habit = new Habit(title);
             habitModel.add(habit);
 
-
             File f = new File("obj.txt");
             try{
-                FileOutputStream fos = new FileOutputStream(f);
+               f.createNewFile();
+            }catch (IOException err){
+                System.out.println("file already exists");
+                System.out.println("createNewFile: IOException\n");
+            }
+
+
+
+            try{
+                FileOutputStream fos = new FileOutputStream(f,false);
                 try{
                     ObjectOutputStream oos = new ObjectOutputStream(fos);
                     oos.writeInt(habitModel.size());
